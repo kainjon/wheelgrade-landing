@@ -509,37 +509,24 @@
   </div>
 </div>
 
-<div id="install-desktop-modal" class="install-modal" hidden role="dialog" aria-modal="true" aria-labelledby="install-desktop-modal-title">
-  <div class="install-modal-card">
-    <h3 id="install-desktop-modal-title">Install WheelGrade on this computer</h3>
-    <ol>
-      <li>Look for the <b>install icon</b> at the right end of your browser's address bar (a small monitor with a down arrow).</li>
-      <li>Click it, then click <b>Install</b>.</li>
-      <li>WheelGrade opens as its own app window, with its own icon — no browser needed.</li>
-    </ol>
-    <p style="font-size:14px;color:var(--ink-2);margin:0 0 20px">No install icon? In Chrome or Edge, open the browser menu (&#8942;) and pick <b>Save and share &rarr; Install WheelGrade</b> (Chrome) or <b>Apps &rarr; Install WheelGrade</b> (Edge).</p>
-    <button class="btn btn-primary" id="install-desktop-modal-close" type="button">Got it</button>
-  </div>
-</div>
-
 <script>
-/* Install button — shows whenever the app isn't already installed.
-   When a store listing exists, the button goes straight to the store
-   (the clean install); otherwise it uses the web install.
-   Android/Chrome: native install prompt (beforeinstallprompt) when the
-   browser offers one; if it doesn't (already installed, prompt
-   dismissed, or the browser never fires it), the button opens a modal
-   with the manual steps instead of sitting dead. iPhone/iPad: Safari
-   has no install prompt, so the button opens the Share → Add to Home
-   Screen steps. Paste the store URLs here when the listings go live. */
+/* Install button — only ever a one-click install, never manual work.
+   Users don't want steps they're unsure of, so the button only appears
+   when the install itself is automatic: a store listing (one tap, the
+   clean path), the browser's native install prompt
+   (beforeinstallprompt), or iPhone Safari, where Share → Add to Home
+   Screen is the standard gesture. On desktop with no native prompt and
+   no store listing, there is no clean install — so the button stays
+   hidden instead of handing the user a chore. The store listings are
+   the real fix here; until they're live, the button shows only when
+   the browser offers the install itself. Paste the store URLs here
+   when the listings go live. */
 (function(){
   var APP_STORE_URL = '';   /* e.g. https://apps.apple.com/app/id... */
   var PLAY_STORE_URL = '';  /* e.g. https://play.google.com/store/apps/details?id=com.wheelgrade.app */
   var btn = document.getElementById('install-btn');
   var modal = document.getElementById('install-modal');
   var closeBtn = document.getElementById('install-modal-close');
-  var desktopModal = document.getElementById('install-desktop-modal');
-  var desktopCloseBtn = document.getElementById('install-desktop-modal-close');
   if (!btn) return;
   var isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
   if (isStandalone) return; /* already installed — no button */
@@ -548,16 +535,14 @@
   var storeUrl = isIOS ? APP_STORE_URL : (isAndroid ? PLAY_STORE_URL : '');
   if (storeUrl) {
     btn.textContent = isIOS ? 'Get it on the App Store' : 'Get it on Google Play';
+    btn.hidden = false;
   }
-  /* Always show the button when not installed. Waiting for
-     beforeinstallprompt left it hidden (and dead) whenever Chrome
-     didn't fire the event — e.g. the app is already installed on this
-     device, or the prompt was dismissed before. */
-  btn.hidden = false;
+  if (isIOS && !storeUrl) btn.hidden = false;
   var deferred = null;
   window.addEventListener('beforeinstallprompt', function (e) {
     e.preventDefault();
     deferred = e;
+    btn.hidden = false;
   });
   btn.addEventListener('click', function () {
     if (storeUrl) { window.location.href = storeUrl; return; }
@@ -566,14 +551,10 @@
       deferred.userChoice.then(function () { deferred = null; });
     } else if (isIOS && modal) {
       modal.hidden = false;
-    } else if (desktopModal) {
-      desktopModal.hidden = false;
     }
   });
   if (closeBtn) closeBtn.addEventListener('click', function () { modal.hidden = true; });
   if (modal) modal.addEventListener('click', function (e) { if (e.target === modal) modal.hidden = true; });
-  if (desktopCloseBtn) desktopCloseBtn.addEventListener('click', function () { desktopModal.hidden = true; });
-  if (desktopModal) desktopModal.addEventListener('click', function (e) { if (e.target === desktopModal) desktopModal.hidden = true; });
 })();
 </script>
 
