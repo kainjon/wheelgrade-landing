@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="description" content="WheelGrade Support — how to get help, contact us, and answers to frequently asked questions." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700&display=swap" rel="stylesheet" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2316a34a'/%3E%3Ctext x='32' y='44' font-family='Arial, sans-serif' font-size='34' font-weight='700' fill='white' text-anchor='middle'%3EW%3C/text%3E%3C/svg%3E" />
+    <title>WheelGrade Support</title>
+    <script>try{if(localStorage.getItem('wheelgrade-theme')==='dark'){document.documentElement.setAttribute('data-theme','dark');}}catch(e){}</script>
+    <style>
+      /* LIGHT is the default theme (Nov 14, 2026); dark is available
+         through the header toggle, which sets data-theme="dark" on
+         <html> and is remembered in localStorage ('wheelgrade-theme').
+         The dark palette below is the former default (#0b100d page
+         bg), kept intact so the toggle restores it exactly. */
+      :root {
+        --bg: #ffffff;
+        --surface: #f2f5f2;
+        --surface-2: #e8efe8;
+        --text: #101613;
+        --muted: #3d4741;
+        --line: #dfe5df;
+        --green: #0e7a52;
+        --green-dark: #0e7a52;
+        --green-soft: #e7f4ec;
+        --on-green: #ffffff;
+        --radius: 14px;
+      }
+      :root[data-theme="dark"] {
+        --bg: #0b100d;
+        --surface: #161e17;
+        --surface-2: #1c271d;
+        --text: #eef4ee;
+        --muted: #a7b8a9;
+        --line: #2a382c;
+        --green: #4ade80;
+        --green-dark: #4ade80;
+        --green-soft: #1a2e1f;
+        --on-green: #0d130e;
+      }
+      * { box-sizing: border-box; }
+      html { -webkit-text-size-adjust: 100%; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: ui-sans-system, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        font-size: 18px;
+        line-height: 1.6;
+      }
+      a { color: var(--green-dark); }
+      .wrap {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 0 20px 56px;
+      }
+      /* Top bar */
+      .topbar {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 18px 0 6px;
+        flex-wrap: wrap;
+      }
+      .topbar .nav-links { margin-left: auto; display: flex; gap: 4px; flex-wrap: wrap; }
+      .topbar .nav-links a { color: var(--muted); text-decoration: none; font-size: 15px; font-weight: 600; padding: 10px 12px; min-height: 44px; display: inline-flex; align-items: center; border-radius: 8px; }
+      .topbar .nav-links a:hover { color: var(--text); background: var(--surface-2); }
+      @media (max-width: 720px) {
+        .topbar .nav-links { order: 2; width: 100%; margin-left: 0; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+        .topbar .nav-links::-webkit-scrollbar { display: none; }
+      }
+      /* Black-pill home brand (top-left), identical to the landing
+         page: black pill, white "Wheel", green "Grade", green house
+         icon. In dark mode the pill uses a slightly lighter dark fill
+         + subtle border so it still reads on the black page; the green
+         parts follow --green in both modes. */
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        font-family: "Archivo", sans-serif;
+        font-weight: 700;
+        font-size: 15px;
+        letter-spacing: 0.01em;
+        color: #fff;
+        text-decoration: none;
+        background: #101613;
+        border: 1px solid #101613;
+        border-radius: 999px;
+        padding: 7px 13px 7px 11px;
+        min-height: 0;
+      }
+      .brand:hover { border-color: var(--green); }
+      .brand svg {
+        width: 16px; height: 16px;
+        flex: none;
+        stroke: var(--green);
+      }
+      .brand .g { color: var(--green); }
+      :root[data-theme="dark"] .brand {
+        background: #1a241c;
+        border-color: #2e3d33;
+      }
+      /* Theme toggle — two-way switch: icon shows the CURRENT theme
+         (sun in light, moon in dark), label names the mode tapping
+         switches to. */
+      .theme-toggle {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        min-height: 44px;
+        padding: 8px 14px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: var(--surface);
+        color: var(--text);
+        font-family: inherit;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        white-space: nowrap;
+      }
+      .theme-toggle:hover { background: var(--surface-2); }
+      .theme-toggle .theme-icon { font-size: 15px; line-height: 1; }
+      /* Header */
+      header { padding: 28px 0 8px; }
+      h1 {
+        font-size: 40px;
+        line-height: 1.1;
+        letter-spacing: -0.02em;
+        margin: 0 0 14px;
+        font-weight: 800;
+      }
+      .intro {
+        font-size: 21px;
+        line-height: 1.5;
+        color: var(--muted);
+        margin: 0;
+        max-width: 34em;
+      }
+      /* Contact */
+      .contact {
+        margin-top: 32px;
+        background: var(--green-soft);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 26px 24px;
+      }
+      .contact h2 {
+        font-size: 15px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin: 0 0 10px;
+        color: var(--muted);
+        font-weight: 700;
+      }
+      .contact p {
+        margin: 0 0 18px;
+        font-size: 19px;
+      }
+      .contact p a { font-weight: 700; word-break: break-all; }
+      .email-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 52px;
+        padding: 12px 22px;
+        background: var(--green);
+        color: var(--on-green);
+        font-weight: 700;
+        font-size: 17px;
+        text-decoration: none;
+        border-radius: 10px;
+      }
+      .email-btn:hover { filter: brightness(1.07); }
+      /* FAQ */
+      .faq { margin-top: 44px; }
+      .faq > h2 {
+        font-size: 28px;
+        letter-spacing: -0.015em;
+        margin: 0 0 6px;
+        font-weight: 800;
+      }
+      .faq-item {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 22px 24px;
+        margin-top: 14px;
+      }
+      .faq-item h3 {
+        font-size: 19px;
+        line-height: 1.35;
+        margin: 0 0 8px;
+        font-weight: 700;
+      }
+      .faq-item p { margin: 0; color: var(--muted); font-size: 17.5px; }
+      .faq-item p a { font-weight: 600; }
+      /* Footer */
+      footer {
+        margin-top: 52px;
+        padding-top: 24px;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 15.5px;
+      }
+      footer nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px 24px;
+        margin-bottom: 14px;
+      }
+      footer nav a {
+        display: inline-flex;
+        align-items: center;
+        min-height: 36px;
+        font-weight: 600;
+        text-decoration: none;
+      }
+      footer nav a:hover { text-decoration: underline; }
+      footer p { margin: 4px 0; }
+      @media (max-width: 480px) {
+        body { font-size: 17px; }
+        h1 { font-size: 34px; }
+        .intro { font-size: 19px; }
+        .contact, .faq-item { padding: 20px 18px; }
+        .email-btn { width: 100%; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="topbar">
+        <a class="brand" href="https://wheelgrade.com" aria-label="WheelGrade home">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>Wheel<span class="g">Grade</span>
+        </a>
+        <nav class="nav-links" aria-label="Page sections">
+          <a href="https://wheelgrade.com/app#analyzer">Analyzer</a>
+          <a href="https://wheelgrade.com/app#board">Board</a>
+          <a href="https://wheelgrade.com/app#portfolio">Portfolio</a>
+          <a href="https://wheelgrade.com/app#elite">Elite 32</a>
+          <a href="https://wheelgrade.com/#pricing">Pricing</a>
+          <a href="https://wheelgrade.com/support.html">Support</a>
+        </nav>
+        <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to dark mode"><span class="theme-icon" aria-hidden="true">☀</span><span class="theme-label">Dark</span></button>
+      </div>
+
+      <header>
+        <h1>WheelGrade Support</h1>
+        <p class="intro">Questions about WheelGrade? Here&rsquo;s how to get help.</p>
+      </header>
+
+      <main>
+        <section class="contact" aria-labelledby="contact-heading">
+          <h2 id="contact-heading">Contact us</h2>
+          <p>Email us at <a href="mailto:support@wheelgrade.com">support@wheelgrade.com</a> &mdash; we read every message.</p>
+          <a class="email-btn" href="mailto:support@wheelgrade.com">Email support@wheelgrade.com</a>
+        </section>
+
+        <section class="faq" aria-labelledby="faq-heading">
+          <h2 id="faq-heading">Frequently asked questions</h2>
+
+          <article class="faq-item">
+            <h3>What does WheelGrade do?</h3>
+            <p>It grades an options wheel trade (a cash-secured put or a covered call) A through F before you make it, then tracks every dollar of premium you collect.</p>
+          </article>
+
+          <article class="faq-item">
+            <h3>What tickers does it cover?</h3>
+            <p>The Analyzer grades any ticker, but the Elite 32 are the only names the app treats as verified A+ quality. Off-list names are capped at a C grade.</p>
+          </article>
+
+          <article class="faq-item">
+            <h3>How much does it cost?</h3>
+            <p>$9.99 one-time. Every feature, every platform, no subscription.</p>
+          </article>
+
+          <article class="faq-item">
+            <h3>How do I add a trade to my portfolio?</h3>
+            <p>Grade it in the Analyzer and tap &lsquo;Add to my portfolio,&rsquo; or add a trade you&rsquo;ve already made from the Portfolio tab.</p>
+          </article>
+
+          <article class="faq-item">
+            <h3>Does it connect to my brokerage?</h3>
+            <p>No. WheelGrade does not connect to any brokerage and cannot see your account. You enter your trades yourself (about 30 seconds per trade), and the app tracks them from there.</p>
+          </article>
+
+          <article class="faq-item">
+            <h3>What if I lose my phone or switch devices?</h3>
+            <p>Your portfolio is tied to your account (created at purchase), so it follows you. Sign in on the new device and your portfolio is there.</p>
+          </article>
+
+          <article class="faq-item">
+            <h3>How do I get a refund?</h3>
+            <p>Refunds go through the store you bought it from (Apple App Store or Google Play), under their refund policy. For a web purchase, email <a href="mailto:support@wheelgrade.com">support@wheelgrade.com</a>.</p>
+          </article>
+        </section>
+      </main>
+
+      <footer>
+        <nav aria-label="Footer">
+          <a href="https://wheelgrade.com">Back to WheelGrade</a>
+          <a href="https://wheelgrade.com/privacy.html">Privacy Policy</a>
+        </nav>
+        <p>Built by Jon Kain.</p>
+        <p>&copy; 2026 WheelGrade. All rights reserved.</p>
+      </footer>
+    </div>
+    <script>
+    /* Theme toggle — two-way switch, stored in localStorage on every tap. */
+    (function(){var KEY='wheelgrade-theme';var btn=document.getElementById('theme-toggle');if(!btn)return;function render(){var dark=document.documentElement.getAttribute('data-theme')==='dark';var i=btn.querySelector('.theme-icon');var l=btn.querySelector('.theme-label');if(i)i.textContent=dark?'☾':'☀';if(l)l.textContent=dark?'Light':'Dark';btn.setAttribute('aria-label',dark?'Switch to light mode':'Switch to dark mode');}btn.addEventListener('click',function(){var dark=document.documentElement.getAttribute('data-theme')==='dark';if(dark){document.documentElement.removeAttribute('data-theme');try{localStorage.setItem(KEY,'light');}catch(e){}}else{document.documentElement.setAttribute('data-theme','dark');try{localStorage.setItem(KEY,'dark');}catch(e){}}render();});render();})();
+    </script>
+  </body>
+</html>

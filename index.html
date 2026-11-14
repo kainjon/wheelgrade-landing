@@ -1,0 +1,489 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="light dark" />
+<meta name="description" content="WheelGrade — Grade any wheel trade before you make it, then track every dollar of premium you collect. Coming soon to wheelgrade.com, the App Store, and Google Play." />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230e6b3a'/%3E%3Cpath d='M13 19 L21.5 45 L32 23 L42.5 45 L51 19' fill='none' stroke='white' stroke-width='6.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+<title>WheelGrade — Grade any wheel trade before you make it</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=IBM+Plex+Mono:wght@500;600&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>try{if(localStorage.getItem('wheelgrade-theme')==='dark'){document.documentElement.setAttribute('data-theme','dark');}}catch(e){}</script>
+<style>
+  /* LIGHT is the default theme (Nov 14, 2026); dark is available
+     through the header toggle, which sets data-theme="dark" on <html>
+     and is remembered in localStorage ('wheelgrade-theme'). The dark
+     palette below is the former default (#0b100d page bg), kept intact
+     so the toggle restores it exactly. */
+  :root{
+    --bg:#ffffff; --bg-soft:#f2f5f2; --bg-card:#ffffff; --ink:#101613; --ink-2:#3d4741; --ink-3:#6b7770; --dim:#3d4741;
+    --line:#dfe5df; --green:#0e7a52; --green-bright:#0e7a52; --green-tint:#e7f4ec; --amber:#9a6a00; --amber-tint:#faf0d7;
+    --red:#b3261e; --red-tint:#fbe9e7; --nav-bg:rgba(255,255,255,.92); --on-green:#ffffff;
+    --phone-bg:#070a08; --phone-ink:#eef4ef; --phone-2:#9fb3a5; --phone-line:#263229; --phone-card:#131c16;
+    --shadow:0 18px 44px rgba(16,22,19,.14);
+  }
+  :root[data-theme="dark"]{
+    --bg:#0b100d; --bg-soft:#111713; --bg-card:#121915; --ink:#eef3ef; --ink-2:#b9c6bc; --ink-3:#87958a; --dim:#b9c6bc;
+    --line:#263229; --green:#3ecf7a; --green-bright:#3ecf7a; --green-tint:#152a1d; --amber:#e8bb4a; --amber-tint:#2c2510;
+    --red:#ff8a7a; --red-tint:#331815; --nav-bg:rgba(11,16,13,.92); --on-green:#07130b;
+    --phone-bg:#070a08; --phone-ink:#eef4ef; --phone-2:#9fb3a5; --phone-line:#263229; --phone-card:#131c16;
+    --shadow:0 18px 44px rgba(0,0,0,.45);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *{animation:none!important;transition:none!important} }
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Public Sans",system-ui,-apple-system,Segoe UI,sans-serif;font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{color:var(--green)}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+  .mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+
+  /* Nav */
+  header{position:sticky;top:0;z-index:20;background:var(--nav-bg);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;gap:18px;min-height:60px}
+  /* Black-pill home brand (top-left), restored Nov 14, 2026 — the
+     design Jon liked: black pill, white "Wheel", green "Grade",
+     green house icon. In dark mode the pill uses a slightly lighter
+     dark fill + subtle border so it still reads on the black page;
+     the green parts follow --green-bright in both modes. */
+  .brand{font-family:"Archivo",sans-serif;font-weight:700;font-size:15px;letter-spacing:.01em;color:#fff;text-decoration:none;display:inline-flex;align-items:center;gap:7px;background:#101613;border:1px solid #101613;border-radius:999px;padding:7px 13px 7px 11px}
+  .brand:hover{border-color:var(--green-bright)}
+  .brand svg{width:16px;height:16px;flex:none;stroke:var(--green-bright)}
+  .brand .g{color:var(--green-bright)}
+  :root[data-theme="dark"] .brand{background:#1a241c;border-color:#2e3d33}
+  /* Theme toggle — two-way switch: icon shows the CURRENT theme
+     (sun in light, moon in dark), label names the mode tapping
+     switches to. */
+  .theme-toggle{margin-left:12px;display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:8px 14px;border:1px solid var(--line);border-radius:999px;background:var(--bg-card);color:var(--ink);font-family:"Public Sans",system-ui,sans-serif;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap}
+  .theme-toggle:hover{background:var(--bg-soft)}
+  .theme-toggle .theme-icon{font-size:15px;line-height:1}
+  .nav-links{margin-left:auto;display:flex;gap:4px;flex-wrap:wrap}
+  .nav-links a{color:var(--ink-2);text-decoration:none;font-size:15px;font-weight:600;padding:10px 12px;min-height:44px;display:inline-flex;align-items:center;border-radius:8px}
+  .nav-links a:hover{color:var(--ink);background:var(--bg-soft)}
+  @media(max-width:640px){
+    .nav{flex-wrap:wrap;padding:8px 0 4px;gap:6px}
+    .brand{font-size:18px}
+    .nav-links{order:2;width:100%;margin-left:0;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+    .nav-links::-webkit-scrollbar{display:none}
+    .nav-links a{padding:10px 9px;font-size:14px;white-space:nowrap}
+    .hero-lede{font-size:18px}
+    .tagline{font-size:14.5px}
+  }
+
+  /* Hero */
+  .hero{padding:16px 0 56px;border-bottom:1px solid var(--line)}
+  .hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center}
+  @media(max-width:900px){ .hero-grid{grid-template-columns:1fr} .hero{padding:44px 0 40px} }
+  h1{font-family:"Archivo",sans-serif;font-weight:800;letter-spacing:.018em;line-height:1;margin:0;font-size:clamp(48px,7.5vw,80px);color:var(--ink);display:inline-block;position:relative;padding-bottom:.1em}
+  h1 .g{color:var(--green-bright);font-weight:400}
+  h1::after{content:"";position:absolute;left:0;right:0;bottom:0;height:.045em;background:var(--ink);border-radius:2px}
+  .tagline{font-size:15px;color:var(--ink-2);margin:16px 0 0;max-width:34em;line-height:1.55}
+  .hero-lede{font-size:20px;line-height:1.55;color:var(--ink);margin:26px 0 0;max-width:32em}
+  .hero-lede .wg{font-weight:800}
+  .hero-lede .wg .g{color:var(--green-bright);font-weight:400}
+  .hero-lede strong{color:var(--green)}
+  .hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}
+  .btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:12px 22px;border-radius:10px;font-weight:700;font-size:16px;text-decoration:none;border:1px solid transparent;cursor:pointer;font-family:inherit}
+  .btn-primary{background:var(--green);color:var(--on-green)}
+  .btn-primary:hover{background:var(--green-bright)}
+  .btn-ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+  .btn-ghost:hover{background:var(--bg-soft)}
+  .hero-meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+  .pill{font-size:13.5px;font-weight:600;color:var(--ink-2);border:1px solid var(--line);border-radius:999px;padding:7px 13px;background:var(--bg-card)}
+  .pill b{color:var(--ink)}
+
+  /* Phone mock */
+  .phone{width:min(340px,100%);margin:0 auto;background:var(--phone-bg);color:var(--phone-ink);border-radius:34px;padding:14px;box-shadow:var(--shadow);border:1px solid var(--phone-line)}
+  .phone-notch{width:96px;height:6px;border-radius:99px;background:var(--phone-line);margin:2px auto 14px}
+  .phone-head{display:flex;align-items:baseline;justify-content:space-between;padding:0 6px 10px;border-bottom:1px solid var(--phone-line)}
+  .phone-head .t{font-family:"Archivo",sans-serif;font-weight:800;font-size:17px}
+  .phone-head .s{font-size:11.5px;color:var(--phone-2)}
+  .sample-tag{font-size:12px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:#0e7a52;background:#e7f4ec;border:1px solid #0e7a52;border-radius:99px;text-align:center;margin:10px 6px 0;padding:7px 10px}
+  .grade-row{display:flex;gap:14px;align-items:center;padding:14px 6px 6px}
+  .grade-badge{width:84px;height:84px;flex:0 0 84px;border-radius:18px;background:#12934e;color:#fff;display:grid;place-items:center;font-family:"Archivo",sans-serif;font-weight:900;font-size:52px;line-height:1}
+  .grade-row .who{font-family:"Archivo",sans-serif;font-weight:800;font-size:21px;line-height:1.2}
+  .grade-row .sub{font-size:13px;color:var(--phone-2);line-height:1.45;margin-top:3px}
+  .verdict{margin:10px 6px 0;background:var(--phone-card);border:1px solid var(--phone-line);border-radius:12px;padding:12px 14px;font-size:14px;line-height:1.5}
+  .verdict b{color:#3ecf7a}
+  .metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px 6px 6px}
+  .metric{background:var(--phone-card);border:1px solid var(--phone-line);border-radius:12px;padding:10px 12px}
+  .metric .k{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--phone-2)}
+  .metric .v{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:17px;margin-top:2px}
+  .metric .v.good{color:#3ecf7a}
+  .phone-tabs{display:flex;gap:6px;padding:12px 6px 4px}
+  .phone-tabs span{flex:1;text-align:center;font-size:12.5px;font-weight:700;padding:9px 4px;border-radius:9px;background:var(--phone-card);border:1px solid var(--phone-line);color:var(--phone-2)}
+  .phone-tabs span.on{background:#12934e;color:#fff;border-color:#12934e}
+
+  /* Sections */
+  section{padding:64px 0}
+  section.alt{background:var(--bg-soft)}
+  .sec-head{max-width:44em}
+  .sec-num{font-family:"IBM Plex Mono",monospace;font-size:13px;font-weight:600;letter-spacing:.08em;color:var(--green);text-transform:uppercase;margin:0 0 8px}
+  h2{font-family:"Archivo",sans-serif;font-weight:800;letter-spacing:-.025em;line-height:1.08;font-size:clamp(30px,4.5vw,42px);margin:0 0 14px}
+  .sec-head p{font-size:18px;color:var(--ink-2);margin:0;line-height:1.65}
+  .feature-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start;margin-top:36px}
+  @media(max-width:860px){ .feature-grid{grid-template-columns:1fr} section{padding:48px 0} }
+  .checklist{list-style:none;margin:0;padding:0;display:grid;gap:0}
+  .checklist li{display:flex;gap:14px;padding:15px 0;border-top:1px solid var(--line)}
+  .checklist li:first-child{border-top:none;padding-top:2px}
+  .check{flex:0 0 26px;width:26px;height:26px;border-radius:50%;background:var(--green-tint);color:var(--green);display:grid;place-items:center;margin-top:2px}
+  .check svg{width:14px;height:14px}
+  .checklist b{display:block;font-size:16.5px}
+  .checklist p{margin:2px 0 0;color:var(--ink-2);font-size:15.5px;line-height:1.55}
+
+  /* Board mock table */
+  .board-card{background:var(--bg-card);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:var(--shadow)}
+  .board-card .bc-head{display:flex;justify-content:space-between;align-items:baseline;padding:16px 18px;border-bottom:1px solid var(--line)}
+  .board-card .bc-head b{font-family:"Archivo",sans-serif;font-size:16px}
+  .board-card .bc-head span{font-size:12.5px;color:var(--ink-3)}
+  .brow{display:grid;grid-template-columns:64px 1fr auto;gap:12px;align-items:center;padding:13px 18px;border-bottom:1px solid var(--line)}
+  .brow:last-child{border-bottom:none}
+  .brow .tk{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:16px}
+  .brow .dt{font-size:13.5px;color:var(--ink-2)}
+  .brow .dt .mono{font-size:13px}
+  .action{font-size:12px;font-weight:700;letter-spacing:.04em;padding:6px 10px;border-radius:999px;white-space:nowrap}
+  .action.put{background:var(--green-tint);color:var(--green)}
+  .action.call{background:var(--amber-tint);color:var(--amber)}
+  .action.hold{background:var(--bg-soft);color:var(--ink-3);border:1px solid var(--line)}
+  .flag{font-size:11.5px;color:var(--red);font-weight:700}
+
+  /* Portfolio mock */
+  .pf-stats{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .pf-stat{background:var(--bg-card);border:1px solid var(--line);border-radius:14px;padding:18px}
+  .pf-stat .k{font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+  .pf-stat .v{font-family:"Archivo",sans-serif;font-weight:800;font-size:30px;letter-spacing:-.02em;margin-top:4px}
+  .pf-stat .s{font-size:13.5px;color:var(--ink-2);margin-top:2px}
+  .pf-note{font-size:13px;color:var(--ink-3);margin-top:12px}
+
+  /* Elite 32 */
+  .elite-groups{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:34px}
+  @media(max-width:700px){ .elite-groups{grid-template-columns:1fr} }
+  .egroup{background:var(--bg-card);border:1px solid var(--line);border-radius:14px;padding:20px}
+  .egroup h3{font-family:"Archivo",sans-serif;font-size:18px;margin:0 0 4px;letter-spacing:-.01em}
+  .egroup p{margin:0 0 14px;font-size:14.5px;color:var(--ink-2);line-height:1.55}
+  .chips{display:flex;flex-wrap:wrap;gap:7px}
+  .chip{font-family:"IBM Plex Mono",monospace;font-size:13.5px;font-weight:600;border:1px solid var(--line);background:var(--bg-soft);border-radius:8px;padding:6px 10px;min-height:32px;display:inline-flex;align-items:center}
+  .chip.blurred{filter:blur(5px);user-select:none;pointer-events:none}
+  .elite-unlock{margin-top:26px;text-align:center}
+  .elite-unlock p{margin:0 0 14px;font-size:15px;color:var(--dim)}
+  .elite-unlock p b{color:var(--ink)}
+  .quality-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px}
+  @media(max-width:700px){ .quality-strip{grid-template-columns:1fr} }
+  .qbox{border-top:3px solid var(--green);padding-top:12px}
+  .qbox b{font-family:"Archivo",sans-serif;font-size:16px;display:block;margin-bottom:4px}
+  .qbox p{margin:0;font-size:14.5px;color:var(--ink-2);line-height:1.55}
+
+  /* Pricing + availability */
+  .price-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+  @media(max-width:860px){ .price-grid{grid-template-columns:1fr} }
+  .price-big{font-family:"Archivo",sans-serif;font-weight:900;font-size:clamp(52px,7vw,76px);letter-spacing:-.03em;line-height:1;margin:0}
+  .price-big small{font-size:22px;font-weight:700;color:var(--ink-2);letter-spacing:0}
+  .price-points{list-style:none;margin:22px 0 0;padding:0;display:grid;gap:10px;font-size:16.5px}
+  .price-points li{display:flex;gap:11px;align-items:flex-start}
+  .price-points .check{flex-basis:24px;width:24px;height:24px}
+  .avail-card{background:var(--bg-card);border:1px solid var(--line);border-radius:16px;padding:26px;box-shadow:var(--shadow)}
+  .avail-card h3{font-family:"Archivo",sans-serif;margin:0 0 6px;font-size:20px}
+  .avail-card>p{margin:0 0 18px;color:var(--ink-2);font-size:15.5px}
+  .platforms{display:grid;gap:10px}
+  .platform{display:flex;align-items:center;gap:14px;border:1px solid var(--line);border-radius:12px;padding:14px 16px;min-height:60px}
+  .platform .pi{width:38px;height:38px;flex:0 0 38px;border-radius:10px;background:var(--bg-soft);border:1px solid var(--line);display:grid;place-items:center;color:var(--ink)}
+  .platform .pi svg{width:20px;height:20px}
+  .platform b{display:block;font-size:16px;line-height:1.3}
+  .platform span{font-size:13.5px;color:var(--ink-2)}
+  .soon{margin-left:auto;font-size:11.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--amber);background:var(--amber-tint);padding:5px 9px;border-radius:999px;white-space:nowrap}
+  .live{margin-left:auto;font-size:11.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--green);background:var(--green-tint);padding:5px 9px;border-radius:999px;white-space:nowrap}
+  .install-note{font-size:14px;color:var(--ink-2);margin:16px 0 0;line-height:1.6}
+
+  footer{border-top:1px solid var(--line);background:var(--bg-soft);padding:40px 0 48px}
+  .foot-brand{font-family:"Archivo",sans-serif;font-weight:900;font-size:19px;margin:0 0 4px}
+  .foot-tag{font-size:13.5px;color:var(--ink-2);margin:0 0 22px}
+  .disclaimer-short{font-weight:700;font-size:15px;margin:0 0 8px}
+  .disclaimer-full{font-size:13.5px;color:var(--ink-2);line-height:1.65;max-width:62em;margin:0 0 20px}
+  .copyright{font-size:13px;color:var(--ink-3);margin:0}
+  .built-by{font-size:13.5px;color:var(--ink-2);margin:0 0 6px}
+  .built-by b{color:var(--ink);font-weight:600}
+  .built-by a{color:var(--green);text-decoration:underline;text-underline-offset:3px;padding:10px 4px;margin:-10px 0;display:inline-block}
+  .built-by a:hover{text-decoration:none}
+  .foot-sep{color:var(--ink-3);margin:0 4px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#top" aria-label="WheelGrade home"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>Wheel<span class="g">Grade</span></a>
+    <nav class="nav-links" aria-label="Page sections">
+      <a href="https://wheelgrade.com/app#analyzer">Analyzer</a>
+      <a href="https://wheelgrade.com/app#board">Board</a>
+      <a href="https://wheelgrade.com/app#portfolio">Portfolio</a>
+      <a href="https://wheelgrade.com/app#elite">Elite 32</a>
+      <a href="#pricing">Pricing</a>
+      <a href="https://wheelgrade.com/support.html">Support</a>
+    </nav>
+    <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to dark mode"><span class="theme-icon" aria-hidden="true">☀</span><span class="theme-label">Dark</span></button>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <h1>Wheel<span class="g">Grade</span></h1>
+        <p class="tagline">Know if a trade is worth it — before you make it.</p>
+        <p class="hero-lede">Your brokerage will sell you any option. <span class="wg">Wheel<span class="g">Grade</span></span> scores it an A–F grade first, so you only take the good ones — and it tracks every dollar of premium you collect. Your first 3 grades are free — then one $9.99 payment, yours for life.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="https://buy.stripe.com/dRmbJ079c1lC09G4omgnK00" target="_blank" rel="noopener">Buy WheelGrade — $9.99</a>
+          <a class="btn btn-ghost" href="#elite">See the Elite 32</a>
+        </div>
+        <div class="hero-meta">
+          <span class="pill"><b>Analyzer</b> · grade any trade</span>
+          <span class="pill"><b>Board</b> · all 32 names at a glance</span>
+          <span class="pill"><b>Portfolio</b> · every premium dollar</span>
+        </div>
+      </div>
+
+      <div class="phone" role="img" aria-label="Sample WheelGrade analyzer screen showing an example trade graded A">
+        <div class="phone-notch"></div>
+        <div class="phone-head"><span class="t">Analyzer</span><span class="s">CSP · Dec 18</span></div>
+        <p class="sample-tag">Sample — example trade, not live data</p>
+        <div class="grade-row">
+          <div class="grade-badge">A</div>
+          <div>
+            <div class="who">MSFT — Cash-Secured Put</div>
+            <div class="sub">$460 strike · ~30Δ · expires in 32 days</div>
+          </div>
+        </div>
+        <div class="verdict"><b>Verdict: Take it.</b> Elite quality, rent clears the gate, no earnings print inside the trade.</div>
+        <div class="metric-grid">
+          <div class="metric"><div class="k">Rent / month</div><div class="v good">1.52%</div></div>
+          <div class="metric"><div class="k">Basis if assigned</div><div class="v">$453.50</div></div>
+          <div class="metric"><div class="k">Print gate</div><div class="v good">Clear</div></div>
+          <div class="metric"><div class="k">Quality</div><div class="v">Elite 32</div></div>
+        </div>
+        <div class="phone-tabs"><span class="on">Analyzer</span><span>Portfolio</span><span>Board</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 1. ANALYZER -->
+  <section id="analyzer">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="sec-num">01 — Analyzer</p>
+        <h2>Grade the trade before you make it</h2>
+        <p>Type a ticker, pick a covered call or cash-secured put, pick an expiration. WheelGrade pulls the live option chain and grades the trade A through F — on quality, rent, delta, the earnings print gate, basis if assigned, and liquidity. Verdict up top, numbers underneath, and the one or two things to change.</p>
+      </div>
+      <div class="feature-grid">
+        <ul class="checklist">
+          <li>
+            <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+            <div><b>Quality first</b><p>The grade starts with the company, not the premium. Anything outside the Elite 32 is capped — a fat premium on a weak name never earns an A.</p></div>
+          </li>
+          <li>
+            <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+            <div><b>The 1% rent gate</b><p>Premium is measured as rent on your capital, per month. Below the gate, the trade has to earn its way back in — or it gets marked down.</p></div>
+          </li>
+          <li>
+            <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+            <div><b>The print gate is a hard fail</b><p>Earnings inside the expiration? The grade stops cold. No exceptions, even for the best names on the list.</p></div>
+          </li>
+        </ul>
+        <ul class="checklist">
+          <li>
+            <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+            <div><b>~30 delta, checked</b><p>The suggested strike targets roughly 30 delta — the wheel's working range — and the grade tells you when your strike drifts too hot or too cold.</p></div>
+          </li>
+          <li>
+            <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+            <div><b>Basis if assigned</b><p>Every put grade shows the price you'd actually own the stock at after premium — the number that decides whether assignment is a win or a trap.</p></div>
+          </li>
+          <li>
+            <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+            <div><b>Liquidity</b><p>Thin chains and wide spreads get flagged, so the premium on screen is premium you can actually collect.</p></div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING + AVAILABILITY -->
+  <section id="pricing">
+    <div class="wrap price-grid">
+      <div>
+        <p class="sec-num">Pricing</p>
+        <p class="price-big">$9.99 <small>one-time</small></p>
+        <ul class="price-points">
+          <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><span><b>Every feature included</b> — Analyzer, Board, and Portfolio.</span></li>
+          <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><span><b>Every platform included</b> — web, iPhone, and Android.</span></li>
+          <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><span><b>No subscription.</b> Pay once. It's yours.</span></li>
+        </ul>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="https://buy.stripe.com/dRmbJ079c1lC09G4omgnK00" target="_blank" rel="noopener">Buy WheelGrade — $9.99</a>
+        </div>
+      </div>
+      <div class="avail-card">
+        <h3>Where to get it</h3>
+        <p>The web app is live now. iPhone and Android are coming soon.</p>
+        <div class="platforms">
+          <div class="platform">
+            <span class="pi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg></span>
+            <div><b><a href="https://wheelgrade.com/app" style="color:inherit;text-decoration:none">Web app</a></b><span>wheelgrade.com/app — runs in any browser</span></div>
+            <span class="live">Live now</span>
+          </div>
+          <div class="platform">
+            <span class="pi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2.5"/><path d="M11 18.5h2"/></svg></span>
+            <div><b>iPhone</b><span>App Store download, plus Add to Home Screen</span></div>
+            <span class="soon">Coming soon</span>
+          </div>
+          <div class="platform">
+            <span class="pi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2.5"/><path d="M11 18.5h2"/></svg></span>
+            <div><b>Android</b><span>Google Play download, plus Add to Home Screen</span></div>
+            <span class="soon">Coming soon</span>
+          </div>
+        </div>
+        <p class="install-note">One app, one codebase, everywhere: the website <em>is</em> the web version of the app, and the phone apps are the same WheelGrade — full-screen, with its own home-screen icon, no browser needed.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. BOARD -->
+  <section id="board" class="alt">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="sec-num">02 — Board</p>
+        <h2>The whole list, in one look</h2>
+        <p>All 32 Elite names at a glance: live price, discount off the 1-year high, rent, and the action in plain words. The daily decision board, on your phone.</p>
+      </div>
+      <div class="feature-grid">
+        <div class="board-card" role="img" aria-label="Sample Board screen listing Elite names with prices, discounts, and actions">
+          <div class="bc-head"><b>Board</b><span>Sample rows</span></div>
+          <div class="brow"><span class="tk">NVDA</span><span class="dt"><span class="mono">$159.46</span> · −18% off high · earnings soon <span class="flag">PRINT</span></span><span class="action hold">WATCH</span></div>
+          <div class="brow"><span class="tk">CSCO</span><span class="dt"><span class="mono">$96.51</span> · −11% off high · rent 1.95%/mo</span><span class="action put">SELL PUTS</span></div>
+          <div class="brow"><span class="tk">AVGO</span><span class="dt"><span class="mono">$340.52</span> · at its level · call rent pays</span><span class="action call">SELL CALLS</span></div>
+          <div class="brow"><span class="tk">WMT</span><span class="dt"><span class="mono">Anchor</span> · steady · above basis</span><span class="action call">SELL CALLS</span></div>
+          <div class="brow"><span class="tk">XLE</span><span class="dt"><span class="mono">Diversifier</span> · holds up when tech falls</span><span class="action hold">HOLD</span></div>
+        </div>
+        <ul class="checklist">
+          <li>
+            <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+            <div><b>Action in plain words</b><p>Sell puts, sell calls, low premium, hold, watch, avoid — no codes to decode. The put side follows the discount off the 1-year high; the call side follows your basis and the rent.</p></div>
+          </li>
+          <li>
+            <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+            <div><b>Earnings flags up front</b><p>Names with a print coming are flagged on the row, so you never write a trade into earnings by accident.</p></div>
+          </li>
+          <li>
+            <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+            <div><b>Tap any row</b><p>Every row opens that ticker's lifetime view — its trades, its premium, its story in your portfolio.</p></div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. PORTFOLIO -->
+  <section id="portfolio">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="sec-num">03 — Portfolio</p>
+        <h2>Every dollar of premium, counted</h2>
+        <p>Total premium collected, per month and all time. Tap any ticker to see its lifetime premium and P&amp;L, including what you made if shares were called away.</p>
+      </div>
+      <div class="feature-grid">
+        <div>
+          <div class="pf-stats">
+            <div class="pf-stat"><div class="k">This month</div><div class="v">$—</div><div class="s">Your premium, as you collect it</div></div>
+            <div class="pf-stat"><div class="k">All time</div><div class="v">$—</div><div class="s">Every trade you've logged</div></div>
+            <div class="pf-stat"><div class="k">Per ticker</div><div class="v">Lifetime</div><div class="s">Premium + P&amp;L if called away</div></div>
+            <div class="pf-stat"><div class="k">Per account</div><div class="v">Split</div><div class="s">Each brokerage, kept separate</div></div>
+          </div>
+          <p class="pf-note">Your portfolio starts empty and stays yours — your positions and premium are never shared.</p>
+        </div>
+        <ul class="checklist">
+          <li>
+            <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+            <div><b>Log it when you make it</b><p>You trade in your own brokerage, then add the trade here. WheelGrade does the bookkeeping brokerages don't: premium by month, by ticker, by account.</p></div>
+          </li>
+          <li>
+            <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+            <div><b>Called away counts</b><p>When shares are called away, the lifetime view includes the sale P&amp;L alongside the premium — the full return on the lot, not just the rent.</p></div>
+          </li>
+          <li>
+            <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+            <div><b>Tap a position, go straight there</b><p>Every position in the list is tappable — the whole card — and opens that ticker's lifetime view.</p></div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ELITE 32 -->
+  <section id="elite" class="alt">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="sec-num">The list behind the grades</p>
+        <h2>Why these 32 are the best of the best</h2>
+        <p>These are the only tickers the app treats as Elite. Each earned its seat by passing a strict quality test first — a durable moat, profitable through cycles, a strong balance sheet and free cash flow, proven at scale, no structural disruption question, clean governance — and only then by lot price and rent. Quality first, always; premium never leads. Grouped as AI engines, mega platforms, steady anchors, and real-asset diversifiers.</p>
+      </div>
+
+      <div class="elite-groups">
+        <div class="egroup">
+          <h3>AI engines</h3>
+          <p>The companies building and powering AI — the wheel's premium engines.</p>
+          <div class="chips"><span class="chip">NVDA</span><span class="chip">AMD</span><span class="chip blurred">AVGO</span><span class="chip blurred">ANET</span><span class="chip blurred">LRCX</span><span class="chip blurred">TSM</span><span class="chip blurred">SMH</span><span class="chip blurred">XLK</span><span class="chip blurred">PANW</span><span class="chip blurred">ORCL</span></div>
+        </div>
+        <div class="egroup">
+          <h3>Mega platforms</h3>
+          <p>The largest platforms on earth — scale, cash flow, and staying power.</p>
+          <div class="chips"><span class="chip">AAPL</span><span class="chip">MSFT</span><span class="chip blurred">GOOGL</span><span class="chip blurred">META</span><span class="chip blurred">AMZN</span></div>
+        </div>
+        <div class="egroup">
+          <h3>Steady anchors</h3>
+          <p>Dividend-grade compounders that stay writable when tech sells off.</p>
+          <div class="chips"><span class="chip">ABBV</span><span class="chip">WMT</span><span class="chip blurred">PM</span><span class="chip blurred">ADP</span><span class="chip blurred">TXN</span><span class="chip blurred">CSCO</span><span class="chip blurred">HD</span><span class="chip blurred">V</span><span class="chip blurred">CME</span><span class="chip blurred">JPM</span><span class="chip blurred">PGR</span></div>
+        </div>
+        <div class="egroup">
+          <h3>Real-asset diversifiers</h3>
+          <p>Energy, real estate, defense, and industrials — ballast for a tech-heavy wheel.</p>
+          <div class="chips"><span class="chip">XLE</span><span class="chip">PLD</span><span class="chip blurred">AMT</span><span class="chip blurred">GE</span><span class="chip blurred">RTX</span><span class="chip blurred">ETN</span></div>
+        </div>
+      </div>
+
+      <div class="elite-unlock">
+        <p>You're seeing the first 2 names in each group. <b>Unlock the full Elite 32</b> — plus unlimited grades, the Board, and your Portfolio — for $9.99, once.</p>
+        <a class="btn btn-primary" href="https://buy.stripe.com/dRmbJ079c1lC09G4omgnK00" target="_blank" rel="noopener">Unlock the full Elite 32 — $9.99</a>
+      </div>
+
+      <div class="quality-strip">
+        <div class="qbox"><b>Quality is the gate</b><p>A name that isn't verified top quality doesn't get on the list — no matter how good its premium looks.</p></div>
+        <div class="qbox"><b>Balance is checked</b><p>Engines, anchors, and diversifiers are tracked as three blocs, so the wheel keeps earning when one part of the market falls.</p></div>
+        <div class="qbox"><b>A roster, not a buy list</b><p>Membership means a name passed the quality test. Whether to trade it today is what the Analyzer and the Board are for.</p></div>
+      </div>
+    </div>
+  </section>
+
+
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p class="foot-brand">WheelGrade</p>
+    <p class="foot-tag">Grade any wheel trade before you make it — then track every dollar of premium you collect.</p>
+    <p class="disclaimer-short">For education only — not financial advice.</p>
+    <p class="disclaimer-full">This app is for educational and informational purposes only. It is not financial advice and is not a recommendation to buy or sell any security. Options involve substantial risk of loss, including loss of the entire premium paid. Consult a licensed financial advisor before making investment decisions.</p>
+    <p class="built-by">Built by <b>Jon Kain</b><span class="foot-sep" aria-hidden="true">·</span><a href="https://wheelgrade.com/privacy.html">Privacy Policy</a><span class="foot-sep" aria-hidden="true">·</span><a href="https://wheelgrade.com/support.html">Support</a></p>
+    <p class="copyright">© 2026 WheelGrade. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+/* Theme toggle — two-way switch, stored in localStorage on every tap. */
+(function(){var KEY='wheelgrade-theme';var btn=document.getElementById('theme-toggle');if(!btn)return;function render(){var dark=document.documentElement.getAttribute('data-theme')==='dark';var i=btn.querySelector('.theme-icon');var l=btn.querySelector('.theme-label');if(i)i.textContent=dark?'☾':'☀';if(l)l.textContent=dark?'Light':'Dark';btn.setAttribute('aria-label',dark?'Switch to light mode':'Switch to dark mode');}btn.addEventListener('click',function(){var dark=document.documentElement.getAttribute('data-theme')==='dark';if(dark){document.documentElement.removeAttribute('data-theme');try{localStorage.setItem(KEY,'light');}catch(e){}}else{document.documentElement.setAttribute('data-theme','dark');try{localStorage.setItem(KEY,'dark');}catch(e){}}render();});render();})();
+</script>
+
+</body>
+</html>
