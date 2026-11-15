@@ -167,6 +167,10 @@
   .elite-list{list-style:none;margin:12px 0 0;padding:0}
   .elite-row{display:flex;align-items:baseline;gap:8px;padding:12px 16px;font-size:16px;border-bottom:2px solid var(--line)}
   .elite-row:last-child{border-bottom:none}
+  /* Category boundary: a thicker green line under the last ticker of
+     every Elite category (ORCL, AMZN, PGR, ETN). After the last-child
+     rule so it wins on the final row too. */
+  .elite-row.cat-end{border-bottom:4px solid var(--green)}
   .elite-ticker{font-family:"IBM Plex Mono",monospace;font-size:16px;font-weight:700}
   .elite-row.blurred{filter:blur(5px);user-select:none;pointer-events:none}
   .role-tag{margin-left:auto;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);background:var(--bg-soft);border-radius:999px;padding:2px 8px;white-space:nowrap}
@@ -456,12 +460,12 @@
           <li class="elite-row blurred"><span class="elite-ticker">SMH</span><span class="role-tag">Tech</span></li>
           <li class="elite-row blurred"><span class="elite-ticker">XLK</span><span class="role-tag">Tech</span></li>
           <li class="elite-row blurred"><span class="elite-ticker">PANW</span><span class="role-tag">Tech</span></li>
-          <li class="elite-row blurred"><span class="elite-ticker">ORCL</span><span class="role-tag">Tech</span></li>
+          <li class="elite-row blurred cat-end"><span class="elite-ticker">ORCL</span><span class="role-tag">Tech</span></li>
           <li class="elite-row"><span class="elite-ticker">AAPL</span><span class="role-tag">Tech</span></li>
           <li class="elite-row"><span class="elite-ticker">MSFT</span><span class="role-tag">Tech</span></li>
           <li class="elite-row blurred"><span class="elite-ticker">GOOGL</span><span class="role-tag">Tech</span></li>
           <li class="elite-row blurred"><span class="elite-ticker">META</span><span class="role-tag">Tech</span></li>
-          <li class="elite-row blurred"><span class="elite-ticker">AMZN</span><span class="role-tag">Tech</span></li>
+          <li class="elite-row blurred cat-end"><span class="elite-ticker">AMZN</span><span class="role-tag">Tech</span></li>
           <li class="elite-row"><span class="elite-ticker">ABBV</span><span class="role-tag">Anchor</span></li>
           <li class="elite-row"><span class="elite-ticker">WMT</span><span class="role-tag">Anchor</span></li>
           <li class="elite-row blurred"><span class="elite-ticker">PM</span><span class="role-tag">Anchor</span></li>
@@ -472,13 +476,13 @@
           <li class="elite-row blurred"><span class="elite-ticker">V</span><span class="role-tag">Anchor</span></li>
           <li class="elite-row blurred"><span class="elite-ticker">CME</span><span class="role-tag">Anchor</span></li>
           <li class="elite-row blurred"><span class="elite-ticker">JPM</span><span class="role-tag">Anchor</span></li>
-          <li class="elite-row blurred"><span class="elite-ticker">PGR</span><span class="role-tag">Anchor</span></li>
+          <li class="elite-row blurred cat-end"><span class="elite-ticker">PGR</span><span class="role-tag">Anchor</span></li>
           <li class="elite-row"><span class="elite-ticker">XLE</span><span class="role-tag">Diverse</span></li>
           <li class="elite-row"><span class="elite-ticker">PLD</span><span class="role-tag">Diverse</span></li>
           <li class="elite-row blurred"><span class="elite-ticker">AMT</span><span class="role-tag">Diverse</span></li>
           <li class="elite-row blurred"><span class="elite-ticker">GE</span><span class="role-tag">Diverse</span></li>
           <li class="elite-row blurred"><span class="elite-ticker">RTX</span><span class="role-tag">Diverse</span></li>
-          <li class="elite-row blurred"><span class="elite-ticker">ETN</span><span class="role-tag">Diverse</span></li>
+          <li class="elite-row blurred cat-end"><span class="elite-ticker">ETN</span><span class="role-tag">Diverse</span></li>
         </ul>
       </div>
 
