@@ -88,6 +88,7 @@
   .hero-lede .wg .g{color:var(--green-bright);font-weight:400}
   .hero-lede strong{color:var(--green)}
   .hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}
+  [hidden]{display:none !important} /* .btn sets display:inline-flex, which beats the UA hidden rule — without this, hidden buttons still show */
   .btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:12px 22px;border-radius:10px;font-weight:700;font-size:16px;text-decoration:none;border:1px solid transparent;cursor:pointer;font-family:inherit}
   .btn-primary{background:var(--green);color:var(--on-green)}
   .btn-primary:hover{background:var(--green-bright)}
@@ -557,6 +558,16 @@
 </div>
 
 <script>
+/* Landing-page service worker — registers /sw.js so the browser can
+   offer a one-click install (beforeinstallprompt) on desktop and
+   Android. Without a service worker Chrome never fires that event,
+   so the install button could never appear on desktop at all.
+   /sw.js only covers the landing pages; /app/sw.js still owns /app/. */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('/sw.js').catch(function () { /* install button just stays hidden */ });
+  });
+}
 /* Install button — only ever a one-click install, never manual work.
    Users don't want steps they're unsure of, so the button only appears
    when the install itself is automatic: a store listing (one tap, the
