@@ -158,15 +158,18 @@
   .pf-stat .s{font-size:13.5px;color:var(--ink-2);margin-top:2px}
   .pf-note{font-size:13px;color:var(--ink-3);margin-top:12px}
 
-  /* Elite 32 */
-  .elite-groups{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:34px}
-  @media(max-width:700px){ .elite-groups{grid-template-columns:1fr} }
-  .egroup{background:var(--bg-card);border:1px solid var(--line);border-radius:14px;padding:20px}
-  .egroup h3{font-family:"Archivo",sans-serif;font-size:18px;margin:0 0 4px;letter-spacing:-.01em}
-  .egroup p{margin:0 0 14px;font-size:14.5px;color:var(--ink-2);line-height:1.55}
-  .chips{display:flex;flex-wrap:wrap;gap:7px}
-  .chip{font-family:"IBM Plex Mono",monospace;font-size:13.5px;font-weight:600;border:1px solid var(--line);background:var(--bg-soft);border-radius:8px;padding:6px 10px;min-height:32px;display:inline-flex;align-items:center}
-  .chip.blurred{filter:blur(5px);user-select:none;pointer-events:none}
+  /* Elite 32 — one flat list, all 32 together (matches the app). The
+     role rides on the right of each row as a small tag. */
+  .elite-flagship{background:linear-gradient(180deg,rgba(14,122,82,.07),rgba(14,122,82,.02));border:2px solid var(--green);border-left:6px solid var(--green);border-radius:16px;padding:20px 20px 12px;margin-top:34px;box-shadow:0 2px 12px rgba(14,122,82,.12)}
+  .elite-flagship-head{display:flex;align-items:baseline;gap:10px;margin-bottom:6px}
+  .elite-flagship-title{font-family:"Archivo",sans-serif;font-size:28px;font-weight:800;letter-spacing:-.02em}
+  .elite-flagship-tag{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#fff;background:var(--green);border-radius:999px;padding:3px 9px}
+  .elite-list{list-style:none;margin:12px 0 0;padding:0}
+  .elite-row{display:flex;align-items:baseline;gap:8px;padding:12px 16px;font-size:16px;border-bottom:2px solid var(--line)}
+  .elite-row:last-child{border-bottom:none}
+  .elite-ticker{font-family:"IBM Plex Mono",monospace;font-size:16px;font-weight:700}
+  .elite-row.blurred{filter:blur(5px);user-select:none;pointer-events:none}
+  .role-tag{margin-left:auto;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);background:var(--bg-soft);border-radius:999px;padding:2px 8px;white-space:nowrap}
   .elite-unlock{margin-top:26px;text-align:center}
   .elite-unlock p{margin:0 0 14px;font-size:15px;color:var(--dim)}
   .elite-unlock p b{color:var(--ink)}
@@ -438,34 +441,49 @@
       <div class="sec-head">
         <p class="sec-num">The list behind the grades</p>
         <h2>Why these 32 are the best of the best</h2>
-        <p>These are the only tickers the app treats as Elite. Each earned its seat by passing a strict quality test first — a durable moat, profitable through cycles, a strong balance sheet and free cash flow, proven at scale, no structural disruption question, clean governance — and only then by lot price and rent. Quality first, always; premium never leads. Grouped as AI engines, mega platforms, steady anchors, and real-asset diversifiers.</p>
+        <p>These are the only tickers the app treats as Elite. Each earned its seat by passing a strict quality test first — a durable moat, profitable through cycles, a strong balance sheet and free cash flow, proven at scale, no structural disruption question, clean governance — and only then by lot price and rent. Quality first, always; premium never leads. Each row is tagged with its role — Tech, Anchor, or Diverse — so you can see the balance at a glance.</p>
       </div>
 
-      <div class="elite-groups">
-        <div class="egroup">
-          <h3>AI engines</h3>
-          <p>The companies building and powering AI — the wheel's premium engines.</p>
-          <div class="chips"><span class="chip">NVDA</span><span class="chip">AMD</span><span class="chip blurred">AVGO</span><span class="chip blurred">ANET</span><span class="chip blurred">LRCX</span><span class="chip blurred">TSM</span><span class="chip blurred">SMH</span><span class="chip blurred">XLK</span><span class="chip blurred">PANW</span><span class="chip blurred">ORCL</span></div>
-        </div>
-        <div class="egroup">
-          <h3>Mega platforms</h3>
-          <p>The largest platforms on earth — scale, cash flow, and staying power.</p>
-          <div class="chips"><span class="chip">AAPL</span><span class="chip">MSFT</span><span class="chip blurred">GOOGL</span><span class="chip blurred">META</span><span class="chip blurred">AMZN</span></div>
-        </div>
-        <div class="egroup">
-          <h3>Steady anchors</h3>
-          <p>Dividend-grade compounders that stay writable when tech sells off.</p>
-          <div class="chips"><span class="chip">ABBV</span><span class="chip">WMT</span><span class="chip blurred">PM</span><span class="chip blurred">ADP</span><span class="chip blurred">TXN</span><span class="chip blurred">CSCO</span><span class="chip blurred">HD</span><span class="chip blurred">V</span><span class="chip blurred">CME</span><span class="chip blurred">JPM</span><span class="chip blurred">PGR</span></div>
-        </div>
-        <div class="egroup">
-          <h3>Real-asset diversifiers</h3>
-          <p>Energy, real estate, defense, and industrials — ballast for a tech-heavy wheel.</p>
-          <div class="chips"><span class="chip">XLE</span><span class="chip">PLD</span><span class="chip blurred">AMT</span><span class="chip blurred">GE</span><span class="chip blurred">RTX</span><span class="chip blurred">ETN</span></div>
-        </div>
+      <div class="elite-flagship">
+        <div class="elite-flagship-head"><span class="elite-flagship-title">Elite 32</span><span class="elite-flagship-tag">Flagship</span></div>
+        <ul class="elite-list">
+          <li class="elite-row"><span class="elite-ticker">NVDA</span><span class="role-tag">Tech</span></li>
+          <li class="elite-row"><span class="elite-ticker">AMD</span><span class="role-tag">Tech</span></li>
+          <li class="elite-row blurred"><span class="elite-ticker">AVGO</span><span class="role-tag">Tech</span></li>
+          <li class="elite-row blurred"><span class="elite-ticker">ANET</span><span class="role-tag">Tech</span></li>
+          <li class="elite-row blurred"><span class="elite-ticker">LRCX</span><span class="role-tag">Tech</span></li>
+          <li class="elite-row blurred"><span class="elite-ticker">TSM</span><span class="role-tag">Tech</span></li>
+          <li class="elite-row blurred"><span class="elite-ticker">SMH</span><span class="role-tag">Tech</span></li>
+          <li class="elite-row blurred"><span class="elite-ticker">XLK</span><span class="role-tag">Tech</span></li>
+          <li class="elite-row blurred"><span class="elite-ticker">PANW</span><span class="role-tag">Tech</span></li>
+          <li class="elite-row blurred"><span class="elite-ticker">ORCL</span><span class="role-tag">Tech</span></li>
+          <li class="elite-row"><span class="elite-ticker">AAPL</span><span class="role-tag">Tech</span></li>
+          <li class="elite-row"><span class="elite-ticker">MSFT</span><span class="role-tag">Tech</span></li>
+          <li class="elite-row blurred"><span class="elite-ticker">GOOGL</span><span class="role-tag">Tech</span></li>
+          <li class="elite-row blurred"><span class="elite-ticker">META</span><span class="role-tag">Tech</span></li>
+          <li class="elite-row blurred"><span class="elite-ticker">AMZN</span><span class="role-tag">Tech</span></li>
+          <li class="elite-row"><span class="elite-ticker">ABBV</span><span class="role-tag">Anchor</span></li>
+          <li class="elite-row"><span class="elite-ticker">WMT</span><span class="role-tag">Anchor</span></li>
+          <li class="elite-row blurred"><span class="elite-ticker">PM</span><span class="role-tag">Anchor</span></li>
+          <li class="elite-row blurred"><span class="elite-ticker">ADP</span><span class="role-tag">Anchor</span></li>
+          <li class="elite-row blurred"><span class="elite-ticker">TXN</span><span class="role-tag">Anchor</span></li>
+          <li class="elite-row blurred"><span class="elite-ticker">CSCO</span><span class="role-tag">Anchor</span></li>
+          <li class="elite-row blurred"><span class="elite-ticker">HD</span><span class="role-tag">Anchor</span></li>
+          <li class="elite-row blurred"><span class="elite-ticker">V</span><span class="role-tag">Anchor</span></li>
+          <li class="elite-row blurred"><span class="elite-ticker">CME</span><span class="role-tag">Anchor</span></li>
+          <li class="elite-row blurred"><span class="elite-ticker">JPM</span><span class="role-tag">Anchor</span></li>
+          <li class="elite-row blurred"><span class="elite-ticker">PGR</span><span class="role-tag">Anchor</span></li>
+          <li class="elite-row"><span class="elite-ticker">XLE</span><span class="role-tag">Diverse</span></li>
+          <li class="elite-row"><span class="elite-ticker">PLD</span><span class="role-tag">Diverse</span></li>
+          <li class="elite-row blurred"><span class="elite-ticker">AMT</span><span class="role-tag">Diverse</span></li>
+          <li class="elite-row blurred"><span class="elite-ticker">GE</span><span class="role-tag">Diverse</span></li>
+          <li class="elite-row blurred"><span class="elite-ticker">RTX</span><span class="role-tag">Diverse</span></li>
+          <li class="elite-row blurred"><span class="elite-ticker">ETN</span><span class="role-tag">Diverse</span></li>
+        </ul>
       </div>
 
       <div class="elite-unlock">
-        <p>You're seeing the first 2 names in each group. <b>Unlock the full Elite 32</b> — plus unlimited grades, the Board, and your Portfolio — for $9.99, once.</p>
+        <p>You're seeing 8 of the 32 names. <b>Unlock the full Elite 32</b> — plus unlimited grades, the Board, and your Portfolio — for $9.99, once.</p>
         <a class="btn btn-primary" href="https://buy.stripe.com/dRmbJ079c1lC09G4omgnK00" target="_blank" rel="noopener">Unlock the full Elite 32 — $9.99</a>
       </div>
 
