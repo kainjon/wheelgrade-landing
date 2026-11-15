@@ -23,6 +23,7 @@
     --bg:#ffffff; --bg-soft:#f2f5f2; --bg-card:#ffffff; --ink:#101613; --ink-2:#3d4741; --ink-3:#6b7770; --dim:#3d4741;
     --line:#dfe5df; --green:#0e7a52; --green-bright:#0e7a52; --green-tint:#e7f4ec; --amber:#9a6a00; --amber-tint:#faf0d7;
     --red:#b3261e; --red-tint:#fbe9e7; --nav-bg:rgba(255,255,255,.92); --on-green:#ffffff;
+    --tech-bg:#fbe3e1; --tech-text:#8c1d18; --anchor-bg:#dff0e2; --anchor-text:#14532d; --diverse-bg:#dde9f7; --diverse-text:#1e3a5f;
     --phone-bg:#070a08; --phone-ink:#eef4ef; --phone-2:#9fb3a5; --phone-line:#263229; --phone-card:#131c16;
     --shadow:0 18px 44px rgba(16,22,19,.14);
   }
@@ -30,6 +31,7 @@
     --bg:#0b100d; --bg-soft:#111713; --bg-card:#121915; --ink:#eef3ef; --ink-2:#b9c6bc; --ink-3:#87958a; --dim:#b9c6bc;
     --line:#263229; --green:#3ecf7a; --green-bright:#3ecf7a; --green-tint:#152a1d; --amber:#e8bb4a; --amber-tint:#2c2510;
     --red:#ff8a7a; --red-tint:#331815; --nav-bg:rgba(11,16,13,.92); --on-green:#07130b;
+    --tech-bg:#3a1d1a; --tech-text:#f3b3ae; --anchor-bg:#173325; --anchor-text:#a7dcbb; --diverse-bg:#1c2c44; --diverse-text:#b3cdf2;
     --phone-bg:#070a08; --phone-ink:#eef4ef; --phone-2:#9fb3a5; --phone-line:#263229; --phone-card:#131c16;
     --shadow:0 18px 44px rgba(0,0,0,.45);
   }
@@ -174,6 +176,9 @@
   .elite-ticker{font-family:"IBM Plex Mono",monospace;font-size:16px;font-weight:700}
   .elite-row.blurred{filter:blur(5px);user-select:none;pointer-events:none}
   .role-tag{margin-left:auto;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);background:var(--bg-soft);border-radius:999px;padding:2px 8px;white-space:nowrap}
+  .role-tag.tech{background:var(--tech-bg);color:var(--tech-text)}
+  .role-tag.anchor{background:var(--anchor-bg);color:var(--anchor-text)}
+  .role-tag.diverse{background:var(--diverse-bg);color:var(--diverse-text)}
   /* How a name earns the list — one idea per line, bold lead, green
      check. No wall of text: each point scans at a glance. */
   .elite-how{list-style:none;margin:14px 0;padding:0}
@@ -469,38 +474,38 @@
       <div class="elite-flagship">
         <div class="elite-flagship-head"><span class="elite-flagship-title">Elite 32</span><span class="elite-flagship-tag">Flagship</span></div>
         <ul class="elite-list">
-          <li class="elite-row"><span class="elite-ticker">NVDA</span><span class="role-tag">Tech</span></li>
-          <li class="elite-row"><span class="elite-ticker">AMD</span><span class="role-tag">Tech</span></li>
-          <li class="elite-row blurred"><span class="elite-ticker">AVGO</span><span class="role-tag">Tech</span></li>
-          <li class="elite-row blurred"><span class="elite-ticker">ANET</span><span class="role-tag">Tech</span></li>
-          <li class="elite-row blurred"><span class="elite-ticker">LRCX</span><span class="role-tag">Tech</span></li>
-          <li class="elite-row blurred"><span class="elite-ticker">TSM</span><span class="role-tag">Tech</span></li>
-          <li class="elite-row blurred"><span class="elite-ticker">SMH</span><span class="role-tag">Tech</span></li>
-          <li class="elite-row blurred"><span class="elite-ticker">XLK</span><span class="role-tag">Tech</span></li>
-          <li class="elite-row blurred"><span class="elite-ticker">PANW</span><span class="role-tag">Tech</span></li>
-          <li class="elite-row blurred"><span class="elite-ticker">ORCL</span><span class="role-tag">Tech</span></li>
-          <li class="elite-row"><span class="elite-ticker">AAPL</span><span class="role-tag">Tech</span></li>
-          <li class="elite-row"><span class="elite-ticker">MSFT</span><span class="role-tag">Tech</span></li>
-          <li class="elite-row blurred"><span class="elite-ticker">GOOGL</span><span class="role-tag">Tech</span></li>
-          <li class="elite-row blurred"><span class="elite-ticker">META</span><span class="role-tag">Tech</span></li>
-          <li class="elite-row blurred cat-end"><span class="elite-ticker">AMZN</span><span class="role-tag">Tech</span></li>
-          <li class="elite-row"><span class="elite-ticker">ABBV</span><span class="role-tag">Anchor</span></li>
-          <li class="elite-row"><span class="elite-ticker">WMT</span><span class="role-tag">Anchor</span></li>
-          <li class="elite-row blurred"><span class="elite-ticker">PM</span><span class="role-tag">Anchor</span></li>
-          <li class="elite-row blurred"><span class="elite-ticker">ADP</span><span class="role-tag">Anchor</span></li>
-          <li class="elite-row blurred"><span class="elite-ticker">TXN</span><span class="role-tag">Anchor</span></li>
-          <li class="elite-row blurred"><span class="elite-ticker">CSCO</span><span class="role-tag">Anchor</span></li>
-          <li class="elite-row blurred"><span class="elite-ticker">HD</span><span class="role-tag">Anchor</span></li>
-          <li class="elite-row blurred"><span class="elite-ticker">V</span><span class="role-tag">Anchor</span></li>
-          <li class="elite-row blurred"><span class="elite-ticker">CME</span><span class="role-tag">Anchor</span></li>
-          <li class="elite-row blurred"><span class="elite-ticker">JPM</span><span class="role-tag">Anchor</span></li>
-          <li class="elite-row blurred cat-end"><span class="elite-ticker">PGR</span><span class="role-tag">Anchor</span></li>
-          <li class="elite-row"><span class="elite-ticker">XLE</span><span class="role-tag">Diverse</span></li>
-          <li class="elite-row"><span class="elite-ticker">PLD</span><span class="role-tag">Diverse</span></li>
-          <li class="elite-row blurred"><span class="elite-ticker">AMT</span><span class="role-tag">Diverse</span></li>
-          <li class="elite-row blurred"><span class="elite-ticker">GE</span><span class="role-tag">Diverse</span></li>
-          <li class="elite-row blurred"><span class="elite-ticker">RTX</span><span class="role-tag">Diverse</span></li>
-          <li class="elite-row blurred cat-end"><span class="elite-ticker">ETN</span><span class="role-tag">Diverse</span></li>
+          <li class="elite-row"><span class="elite-ticker">NVDA</span><span class="role-tag tech">Tech</span></li>
+          <li class="elite-row"><span class="elite-ticker">AMD</span><span class="role-tag tech">Tech</span></li>
+          <li class="elite-row blurred"><span class="elite-ticker">AVGO</span><span class="role-tag tech">Tech</span></li>
+          <li class="elite-row blurred"><span class="elite-ticker">ANET</span><span class="role-tag tech">Tech</span></li>
+          <li class="elite-row blurred"><span class="elite-ticker">LRCX</span><span class="role-tag tech">Tech</span></li>
+          <li class="elite-row blurred"><span class="elite-ticker">TSM</span><span class="role-tag tech">Tech</span></li>
+          <li class="elite-row blurred"><span class="elite-ticker">SMH</span><span class="role-tag tech">Tech</span></li>
+          <li class="elite-row blurred"><span class="elite-ticker">XLK</span><span class="role-tag tech">Tech</span></li>
+          <li class="elite-row blurred"><span class="elite-ticker">PANW</span><span class="role-tag tech">Tech</span></li>
+          <li class="elite-row blurred"><span class="elite-ticker">ORCL</span><span class="role-tag tech">Tech</span></li>
+          <li class="elite-row"><span class="elite-ticker">AAPL</span><span class="role-tag tech">Tech</span></li>
+          <li class="elite-row"><span class="elite-ticker">MSFT</span><span class="role-tag tech">Tech</span></li>
+          <li class="elite-row blurred"><span class="elite-ticker">GOOGL</span><span class="role-tag tech">Tech</span></li>
+          <li class="elite-row blurred"><span class="elite-ticker">META</span><span class="role-tag tech">Tech</span></li>
+          <li class="elite-row blurred cat-end"><span class="elite-ticker">AMZN</span><span class="role-tag tech">Tech</span></li>
+          <li class="elite-row"><span class="elite-ticker">ABBV</span><span class="role-tag anchor">Anchor</span></li>
+          <li class="elite-row"><span class="elite-ticker">WMT</span><span class="role-tag anchor">Anchor</span></li>
+          <li class="elite-row blurred"><span class="elite-ticker">PM</span><span class="role-tag anchor">Anchor</span></li>
+          <li class="elite-row blurred"><span class="elite-ticker">ADP</span><span class="role-tag anchor">Anchor</span></li>
+          <li class="elite-row blurred"><span class="elite-ticker">TXN</span><span class="role-tag anchor">Anchor</span></li>
+          <li class="elite-row blurred"><span class="elite-ticker">CSCO</span><span class="role-tag anchor">Anchor</span></li>
+          <li class="elite-row blurred"><span class="elite-ticker">HD</span><span class="role-tag anchor">Anchor</span></li>
+          <li class="elite-row blurred"><span class="elite-ticker">V</span><span class="role-tag anchor">Anchor</span></li>
+          <li class="elite-row blurred"><span class="elite-ticker">CME</span><span class="role-tag anchor">Anchor</span></li>
+          <li class="elite-row blurred"><span class="elite-ticker">JPM</span><span class="role-tag anchor">Anchor</span></li>
+          <li class="elite-row blurred cat-end"><span class="elite-ticker">PGR</span><span class="role-tag anchor">Anchor</span></li>
+          <li class="elite-row"><span class="elite-ticker">XLE</span><span class="role-tag diverse">Diverse</span></li>
+          <li class="elite-row"><span class="elite-ticker">PLD</span><span class="role-tag diverse">Diverse</span></li>
+          <li class="elite-row blurred"><span class="elite-ticker">AMT</span><span class="role-tag diverse">Diverse</span></li>
+          <li class="elite-row blurred"><span class="elite-ticker">GE</span><span class="role-tag diverse">Diverse</span></li>
+          <li class="elite-row blurred"><span class="elite-ticker">RTX</span><span class="role-tag diverse">Diverse</span></li>
+          <li class="elite-row blurred cat-end"><span class="elite-ticker">ETN</span><span class="role-tag diverse">Diverse</span></li>
         </ul>
       </div>
 
