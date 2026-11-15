@@ -15,12 +15,14 @@
 var CACHE = 'wheelgrade-landing-v1';
 var SHELL = [
   '/',
- '/index.html',
   '/manifest.json',
   '/app/icon-192.png',
   '/app/icon-512.png',
   '/app/icon-512-maskable.png'
 ];
+/* NOTE: '/index.html' is deliberately NOT in SHELL — the server 308-redirects
+   it to '/', and a non-200 in cache.addAll fails the whole install, so the
+   worker would never activate. '/' serves the same page. */
 
 self.addEventListener('install', function (event) {
   event.waitUntil(
