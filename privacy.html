@@ -31,6 +31,13 @@
     --accent-soft-2:#d5e9dc;
     --on-accent:#ffffff;
     --radius:16px;
+    /* Market-strip palette (Nov 16: the strip is universal — same
+       band as the landing and the app). Values match the landing
+       page's strip vars exactly; --green rides --accent. */
+    --green:#0e7a52;
+    --red:#b3261e;
+    --amber:#9a6a00;
+    --ink-3:#6b7770;
   }
   :root[data-theme="dark"]{
     --bg:#0b100d;
@@ -45,6 +52,10 @@
     --accent-soft:#1a2e20;
     --accent-soft-2:#203a28;
     --on-accent:#0e1510;
+    --green:#3ecf7a;
+    --red:#ff8a7a;
+    --amber:#e8bb4a;
+    --ink-3:#7d8f81;
   }
   :root[data-theme="dark"] section p,
   :root[data-theme="dark"] section ul li{ color:#cfdcd1; }
@@ -64,14 +75,57 @@
 
   .top-rule{ height:6px; background:var(--accent); }
 
-  .back-nav{ margin-bottom:22px; display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+  /* Universal header (Jon, Nov 16: "YES UNIVERSAL ON ALL"): every
+     page carries the same header block — pill row, nav row, market
+     strip — in the landing page's arrangement. The nav row lives in
+     .page-head (same column width as .wrap) so the strip can sit
+     full-width between the nav and the content. */
+  .page-head .head-in{ max-width:760px; margin:0 auto; padding:36px 22px 16px; }
+  @media (min-width:720px){ .page-head .head-in{ padding:52px 32px 16px; } }
+  .back-nav{ position:relative; display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
   .back-nav .nav-links{ margin-left:auto; display:flex; gap:4px; flex-wrap:wrap; }
   .back-nav .nav-links a{ color:var(--muted); text-decoration:none; font-size:15px; font-weight:600; padding:10px 12px; min-height:44px; display:inline-flex; align-items:center; border-radius:8px; white-space:nowrap; flex-shrink:0; }
   .back-nav .nav-links a:hover{ color:var(--text); background:var(--bg-soft); }
-  @media (max-width:720px){
-    .back-nav .nav-links{ order:2; width:100%; margin-left:0; flex-wrap:nowrap; overflow-x:auto; scrollbar-width:none; }
-    .back-nav .nav-links::-webkit-scrollbar{ display:none; }
+  /* Menu button + phone dropdown — the landing page's treatment
+     (the old side-scrolling link row is gone): below 940px the
+     links collapse into a dark panel under a Menu button, styled
+     like the brand pill, with Sign in as the closing green row. */
+  .nav-menu-btn{ display:none; margin-left:auto; align-items:center; gap:6px; min-height:44px; padding:8px 14px; border:1px solid var(--line); border-radius:999px; background:var(--card); color:var(--text); font-family:inherit; font-size:14px; font-weight:700; cursor:pointer; white-space:nowrap; }
+  .nav-menu-btn:hover{ background:var(--bg-soft); }
+  .nav-menu-btn[aria-expanded="true"]{ background:var(--accent-soft); border-color:var(--accent); color:var(--accent); }
+  .nav-menu-btn .nav-menu-icon{ font-size:15px; line-height:1; }
+  @media (max-width:940px){
+    .nav-menu-btn{ display:inline-flex; }
+    .back-nav .nav-links{ display:none; position:absolute; top:calc(100% + 6px); right:0; width:min(280px,calc(100vw - 40px)); flex-direction:column; gap:0; margin-left:0; padding:0; overflow:hidden; background:#101613; border:1px solid #2e3d33; border-top:3px solid #caa53d; border-radius:14px; box-shadow:0 18px 40px rgba(7,19,11,.35); z-index:30; }
+    :root[data-theme="dark"] .back-nav .nav-links{ background:#1a241c; border-color:#33463a; border-top-color:#caa53d; }
+    .back-nav .nav-links.open{ display:flex; }
+    .back-nav .nav-links a{ padding:13px 16px; font-size:15.5px; font-weight:600; color:#e8ede9; min-height:48px; border-radius:0; }
+    .back-nav .nav-links a + a{ border-top:1px solid rgba(255,255,255,.09); }
+    .back-nav .nav-links a:hover{ background:rgba(62,207,122,.16); color:#fff; }
+    .back-nav .nav-links a:active{ background:rgba(62,207,122,.26); color:#fff; }
+    .back-nav .nav-links a[href$="#signin"]{ background:#0e7a52; color:#fff; font-weight:700; }
+    .back-nav .nav-links a[href$="#signin"]:hover{ background:#0a5f40; color:#fff; }
   }
+  @media (max-width:640px){ .nav-menu-label{ display:none; } }
+  /* Market strip — the universal band, copied from the landing
+     page: one row of S&P / Dow / Nasdaq (label + value + signed %),
+     FUTURES/LIVE indicator pinned left (its own row under 600px),
+     fed by GET /app/api/market-strip, hidden until the first
+     successful fetch so a dead feed never shows a broken band. */
+  .market-strip{ position:relative; display:flex; flex-wrap:nowrap; align-items:baseline; justify-content:center; gap:clamp(12px,4vw,2.5rem); white-space:nowrap; line-height:1.4; padding:8px 16px; background:var(--bg-soft); border-bottom:1px solid var(--line); -webkit-text-size-adjust:100%; text-size-adjust:100%; }
+  .market-strip[hidden]{ display:none !important; }
+  .market-strip .ms-item{ display:inline-flex; align-items:baseline; flex:0 1 auto; min-width:0; gap:clamp(2.5px,.8vw,5px); }
+  .market-strip .ms-item>span{ white-space:nowrap; }
+  .market-strip .ms-label{ font-size:clamp(8px,2.3vw,11px); font-weight:600; color:var(--ink-3); letter-spacing:-.01em; }
+  .market-strip .ms-value{ font-size:clamp(10px,3.05vw,13px); font-weight:700; font-variant-numeric:tabular-nums; letter-spacing:-.02em; }
+  .market-strip .ms-change{ font-size:clamp(9px,2.8vw,12px); font-weight:600; font-variant-numeric:tabular-nums; letter-spacing:-.02em; }
+  .market-strip .ms-change.up{ color:var(--green); }
+  .market-strip .ms-change.down{ color:var(--red); }
+  .market-strip .ms-change.none{ color:var(--ink-3); }
+  .market-strip .ms-mode{ position:absolute; left:16px; top:50%; transform:translateY(-50%); display:inline-flex; align-items:center; gap:5px; font-size:clamp(8px,2vw,10px); font-weight:700; letter-spacing:.14em; color:var(--ink-3); }
+  .market-strip .ms-mode-dot{ width:6px; height:6px; border-radius:50%; background:var(--amber); flex:0 0 auto; }
+  .market-strip .ms-mode-live .ms-mode-dot{ background:var(--green); }
+  @media (max-width:599px){ .market-strip{ flex-wrap:wrap; row-gap:1px; padding:7px 10px; gap:10px; } .market-strip .ms-mode{ position:static; transform:none; flex:0 0 100%; order:-1; } .market-strip .ms-item{ gap:4px; } .market-strip .ms-label{ font-size:clamp(8px,2.2vw,11px); } .market-strip .ms-value{ font-size:clamp(11px,3.05vw,13px); } .market-strip .ms-change{ font-size:clamp(10px,2.8vw,12px); } }
   /* Theme toggle — two-way switch: icon shows the CURRENT theme
      (sun in light, moon in dark), label names the mode tapping
      switches to. */
@@ -96,10 +150,10 @@
   .wrap{
     max-width:760px;
     margin:0 auto;
-    padding: 36px 22px 0;
+    padding: 26px 22px 0;
   }
   @media (min-width:720px){
-    .wrap{ padding:52px 32px 0; }
+    .wrap{ padding:34px 32px 0; }
   }
 
   /* Header */
@@ -214,10 +268,12 @@
 </head>
 <body>
 <div class="top-rule" aria-hidden="true"></div>
-<main class="wrap">
+<header class="page-head">
+  <div class="head-in">
   <nav class="back-nav" aria-label="Back to home">
     <a class="brand" href="https://wheelgrade.com" aria-label="WheelGrade home"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>Wheel<span class="g">Grade</span></a>
-    <nav class="nav-links" aria-label="Page sections">
+    <button class="nav-menu-btn" id="nav-menu-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links"><span class="nav-menu-icon" aria-hidden="true">☰</span><span class="nav-menu-label">Menu</span></button>
+    <nav class="nav-links" id="nav-links" aria-label="Page sections">
       <a href="https://wheelgrade.com/app#analyzer">Analyzer</a>
       <a href="https://wheelgrade.com/app#board">Board</a>
       <a href="https://wheelgrade.com/app#portfolio">Portfolio</a>
@@ -231,6 +287,12 @@
     </nav>
     <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to dark mode"><span class="theme-icon" aria-hidden="true">☀</span><span class="theme-label">Dark</span></button>
   </nav>
+  </div>
+</header>
+
+<div id="market-strip" class="market-strip" aria-label="Market snapshot" hidden></div>
+
+<main class="wrap">
   <header>
     <span class="eyebrow"><i></i> WheelGrade</span>
     <h1>WheelGrade Privacy Policy</h1>
@@ -328,6 +390,31 @@
 <script>
 /* Theme toggle — two-way switch, stored in localStorage on every tap. */
 (function(){var KEY='wheelgrade-theme';var btn=document.getElementById('theme-toggle');if(!btn)return;function render(){var dark=document.documentElement.getAttribute('data-theme')==='dark';var i=btn.querySelector('.theme-icon');var l=btn.querySelector('.theme-label');if(i)i.textContent=dark?'☾':'☀';if(l)l.textContent=dark?'Light':'Dark';btn.setAttribute('aria-label',dark?'Switch to light mode':'Switch to dark mode');}btn.addEventListener('click',function(){var dark=document.documentElement.getAttribute('data-theme')==='dark';if(dark){document.documentElement.removeAttribute('data-theme');try{localStorage.setItem(KEY,'light');}catch(e){}}else{document.documentElement.setAttribute('data-theme','dark');try{localStorage.setItem(KEY,'dark');}catch(e){}}render();});render();})();
+</script>
+<script>
+/* Nav dropdown — phone/narrow widths: the Menu button toggles the
+   nav panel; tapping a destination closes it (and navigates), as do
+   an outside tap and Escape. Desktop never sees it (button hidden,
+   links inline) — see the 940px media query. */
+(function(){var btn=document.getElementById('nav-menu-btn');var nav=document.getElementById('nav-links');if(!btn||!nav)return;function close(){nav.classList.remove('open');btn.setAttribute('aria-expanded','false');btn.setAttribute('aria-label','Open menu');}btn.addEventListener('click',function(e){e.stopPropagation();var open=nav.classList.toggle('open');btn.setAttribute('aria-expanded',open?'true':'false');btn.setAttribute('aria-label',open?'Close menu':'Open menu');});nav.addEventListener('click',function(e){if(e.target.closest('a'))close();});document.addEventListener('click',function(e){if(!nav.contains(e.target))close();});document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});})();
+</script>
+<script>
+/* Brand pill — session-aware (Jon, Nov 16): signed in, the pill
+   takes you to your app Home page; signed out, it keeps taking you
+   to the public home, exactly as the plain link says. The check is
+   the app's own scope endpoint (same origin — the session cookie
+   rides along). The default href stays the public home, so
+   signed-out and no-JS visitors are completely unaffected. There
+   is no sign-out on this page: the landing pages are the non-paid
+   staging pages, and Sign out lives only on the app's Home page. */
+(function(){var pill=document.querySelector('a.brand');if(!pill)return;fetch('/app/api/scope',{headers:{'Accept':'application/json'}}).then(function(r){return r.ok?r.json():null;}).then(function(d){if(d&&d.signedIn)pill.setAttribute('href','https://wheelgrade.com/app#home');}).catch(function(){});})();
+</script>
+<script>
+/* Market strip — fills #market-strip from the app's live endpoint
+   (same origin), refreshes every 60s, and stays hidden if the feed
+   fails so the page never shows a broken band. Values >= 10,000
+   render with no decimals; label + value + signed % only. */
+(function(){var el=document.getElementById('market-strip');if(!el)return;function fmtNum(n){var d=Math.abs(n)>=10000?0:2;return n.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});}function fmtSigned(n){return (n>0?'+':'')+fmtNum(n);}function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}function load(){fetch('/app/api/market-strip',{headers:{'Accept':'application/json'}}).then(function(r){if(!r.ok)throw new Error('market-strip '+r.status);return r.json();}).then(function(data){if(!data||!data.rows||!data.rows.length){el.hidden=true;return;}var modeHtml=data.mode==='live'?'<span class="ms-mode ms-mode-live"><span class="ms-mode-dot"></span>LIVE</span>':(data.mode==='futures'?'<span class="ms-mode"><span class="ms-mode-dot"></span>FUTURES</span>':'');el.innerHTML=modeHtml+data.rows.map(function(r){var cls=r.changePct>0?'up':(r.changePct<0?'down':'none');return '<span class="ms-item"><span class="ms-label">'+esc(r.label)+'</span><span class="ms-value">'+fmtNum(r.value)+'</span><span class="ms-change '+cls+'">'+fmtSigned(r.changePct)+'%</span></span>';}).join('');el.hidden=false;}).catch(function(){el.hidden=true;});}load();setInterval(load,60000);})();
 </script>
 </body>
 </html>

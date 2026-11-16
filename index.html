@@ -611,16 +611,25 @@
 (function(){var btn=document.getElementById('nav-menu-btn');var nav=document.getElementById('nav-links');if(!btn||!nav)return;function close(){nav.classList.remove('open');btn.setAttribute('aria-expanded','false');btn.setAttribute('aria-label','Open menu');}btn.addEventListener('click',function(e){e.stopPropagation();var open=nav.classList.toggle('open');btn.setAttribute('aria-expanded',open?'true':'false');btn.setAttribute('aria-label',open?'Close menu':'Open menu');});nav.addEventListener('click',function(e){if(e.target.closest('a'))close();});document.addEventListener('click',function(e){if(!nav.contains(e.target))close();});document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});})();
 </script>
 <script>
-/* Brand pill — the pill links to #top, but #top is <main>, which sits
-   BELOW the header and the market strip, so the browser's default
-   anchor jump scrolled the page up by the header+strip height
-   (measured 107px at 390px wide — and two jumps if the strip was
-   still loading) instead of going to the top of the page (Nov 16,
-   Jon: "the whole page jumps up a tick"). Intercept the click: keep
-   the #top hash via pushState (which never scrolls) and scroll to
-   the true top — smoothly, or instantly for reduced-motion users.
-   With JS off, the link still works as a plain anchor. */
-(function(){var pill=document.querySelector('.brand');if(!pill)return;pill.addEventListener('click',function(e){e.preventDefault();try{history.pushState(null,'','#top');}catch(err){}var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;window.scrollTo({top:0,behavior:reduce?'auto':'smooth'});});})();
+/* Brand pill — session-aware (Jon, Nov 16): ON EVERY PAGE the pill
+   follows the session. Signed in, it takes you to your app Home
+   page (https://wheelgrade.com/app#home); signed out, it stays the
+   staging-home link it has always been. The check is the app's own
+   scope endpoint — same origin, so the session cookie rides along
+   (the strip below already talks to /app/api/* the same way). The
+   default href stays #top and the signed-out behavior below is
+   untouched until the check answers "signed in", so signed-out,
+   no-answer, and no-JS visitors see exactly the old pill.
+   Signed-out click handling: the pill links to #top, but #top is
+   <main>, which sits BELOW the header and the market strip, so the
+   browser's default anchor jump scrolled the page up by the
+   header+strip height (measured 107px at 390px wide — and two
+   jumps if the strip was still loading) instead of going to the
+   top of the page (Nov 16, Jon: "the whole page jumps up a tick").
+   Intercept the click: keep the #top hash via pushState (which
+   never scrolls) and scroll to the true top — smoothly, or
+   instantly for reduced-motion users. */
+(function(){var pill=document.querySelector('.brand');if(!pill)return;var signedIn=false;fetch('/app/api/scope',{headers:{'Accept':'application/json'}}).then(function(r){return r.ok?r.json():null;}).then(function(d){if(d&&d.signedIn){signedIn=true;pill.setAttribute('href','https://wheelgrade.com/app#home');}}).catch(function(){});pill.addEventListener('click',function(e){if(signedIn)return;e.preventDefault();try{history.pushState(null,'','#top');}catch(err){}var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;window.scrollTo({top:0,behavior:reduce?'auto':'smooth'});});})();
 </script>
 <script>
 /* Market strip — fills #market-strip from the app's live endpoint
