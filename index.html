@@ -251,6 +251,16 @@
   .market-strip .ms-change.up{color:var(--green)}
   .market-strip .ms-change.down{color:var(--red)}
   .market-strip .ms-change.none{color:var(--ink-3)}
+
+  /* Session-aware nav auth link: while signed out it stays the plain
+     "Sign in" nav link. When the session check (script at end of
+     body) finds a signed-in account it flips to "Sign out" — a muted
+     red outline pill matching the app's .ls-signout treatment
+     (border + text in the red var on the card surface, never a solid
+     fill). The app's Sign in green-outline state is not applied here:
+     signed out, the landing link is left exactly as designed. */
+  .nav-links a.nav-signout{border:1px solid var(--red);color:var(--red);border-radius:999px;background:var(--bg-card);padding:5px 12px;align-self:center;line-height:1.2}
+  .nav-links a.nav-signout.busy{opacity:.6;pointer-events:none}
 </style>
 </head>
 <body>
@@ -267,7 +277,7 @@
       <a href="https://wheelgrade.com/app#reports">Reports</a>
       <a href="#pricing">Pricing</a>
       <a href="https://wheelgrade.com/support.html">Support</a>
-      <a href="https://wheelgrade.com/app#signin">Sign in</a>
+      <a href="https://wheelgrade.com/app#signin" id="nav-auth">Sign in</a>
     </nav>
     <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to dark mode"><span class="theme-icon" aria-hidden="true">☀</span><span class="theme-label">Dark</span></button>
   </div>
@@ -569,6 +579,19 @@
    fails so the page never shows a broken band. Values >= 10,000
    render with no decimals; label + value + signed % only. */
 (function(){var el=document.getElementById('market-strip');if(!el)return;function fmtNum(n){var d=Math.abs(n)>=10000?0:2;return n.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});}function fmtSigned(n){return (n>0?'+':'')+fmtNum(n);}function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}function load(){fetch('/app/api/market-strip',{headers:{'Accept':'application/json'}}).then(function(r){if(!r.ok)throw new Error('market-strip '+r.status);return r.json();}).then(function(data){if(!data||!data.rows||!data.rows.length){el.hidden=true;return;}el.innerHTML=data.rows.map(function(r){var cls=r.changePct>0?'up':(r.changePct<0?'down':'none');return '<span class="ms-item"><span class="ms-label">'+esc(r.label)+'</span><span class="ms-value">'+fmtNum(r.value)+'</span><span class="ms-change '+cls+'">'+fmtSigned(r.changePct)+'%</span></span>';}).join('');el.hidden=false;}).catch(function(){el.hidden=true;});}load();setInterval(load,60000);})();
+</script>
+
+<script>
+/* Session-aware nav auth link — the app header flips Sign in / Sign
+   out by session; the landing now matches. Checks the same-origin
+   scope endpoint the app itself uses (GET /app/api/scope ->
+   { signedIn, ... }). Signed in: the nav link becomes "Sign out"
+   (muted red outline, .nav-signout) and clicking it POSTs
+   /app/api/auth/signout — which only expires this browser's session
+   cookie — then reloads so the page resyncs to the anonymous view.
+   Signed out or check failed: the plain "Sign in" link is left
+   exactly as-is. */
+(function(){var link=document.getElementById('nav-auth');if(!link)return;fetch('/app/api/scope',{headers:{'Accept':'application/json'}}).then(function(r){if(!r.ok)throw new Error('scope '+r.status);return r.json();}).then(function(s){if(!s||!s.signedIn)return;link.textContent='Sign out';link.classList.add('nav-signout');link.setAttribute('href','#');var busy=false;link.addEventListener('click',function(ev){ev.preventDefault();if(busy)return;busy=true;link.classList.add('busy');function done(){window.location.reload();}fetch('/app/api/auth/signout',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'}).then(done,done);});}).catch(function(){});})();
 </script>
 
 </body>
