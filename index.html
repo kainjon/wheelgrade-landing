@@ -62,15 +62,29 @@
   .theme-toggle{margin-left:12px;display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:8px 14px;border:1px solid var(--line);border-radius:999px;background:var(--bg-card);color:var(--ink);font-family:"Public Sans",system-ui,sans-serif;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap}
   .theme-toggle:hover{background:var(--bg-soft)}
   .theme-toggle .theme-icon{font-size:15px;line-height:1}
-  .nav-links{margin-left:auto;display:flex;gap:4px;flex-wrap:wrap}
-  .nav-links a{color:var(--ink-2);text-decoration:none;font-size:15px;font-weight:600;padding:10px 12px;min-height:44px;display:inline-flex;align-items:center;border-radius:8px}
+  /* One line on desktop (Jon, Nov 16): nowrap everywhere, links
+     tightened (14px, 9px side padding, 2px gap) — measured ~893px
+     for brand + all nine links + theme toggle, so the row fits a
+     single line from ~940px up; below that the dropdown takes over
+     (see the 940px query) and the row never wraps or side-scrolls. */
+  .nav-links{margin-left:auto;display:flex;gap:2px;flex-wrap:nowrap}
+  .nav-links a{color:var(--ink-2);text-decoration:none;font-size:14px;font-weight:600;padding:10px 9px;min-height:44px;display:inline-flex;align-items:center;border-radius:8px;white-space:nowrap}
   .nav-links a:hover{color:var(--ink);background:var(--bg-soft)}
+  /* Menu button — phone/narrow widths only (dropdown below). */
+  .nav-menu-btn{display:none;margin-left:auto;align-items:center;gap:6px;min-height:44px;padding:8px 14px;border:1px solid var(--line);border-radius:999px;background:var(--bg-card);color:var(--ink);font-family:"Public Sans",system-ui,sans-serif;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap}
+  .nav-menu-btn:hover{background:var(--bg-soft)}
+  .nav-menu-btn .nav-menu-icon{font-size:15px;line-height:1}
+  @media(max-width:940px){
+    .nav-menu-btn{display:inline-flex}
+    .nav-links{display:none;position:absolute;top:100%;right:20px;width:min(260px,calc(100vw - 40px));flex-direction:column;gap:2px;margin-left:0;padding:6px;background:var(--bg-card);border:1px solid var(--line);border-radius:12px;box-shadow:0 12px 32px rgba(0,0,0,.16);z-index:30}
+    .nav-links.open{display:flex}
+    .nav-links a{padding:11px 12px;font-size:15px}
+  }
   @media(max-width:640px){
-    .nav{flex-wrap:wrap;padding:8px 0 4px;gap:6px}
+    .nav{gap:6px}
     .brand{font-size:18px}
-    .nav-links{order:2;width:100%;margin-left:0;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
-    .nav-links::-webkit-scrollbar{display:none}
-    .nav-links a{padding:10px 9px;font-size:14px;white-space:nowrap;flex-shrink:0}
+    .nav-menu-btn{padding:8px 11px}
+    .nav-menu-label{display:none}
     .hero-lede{font-size:18px}
     .tagline{font-size:14.5px}
   }
@@ -269,7 +283,8 @@
 <header>
   <div class="wrap nav">
     <a class="brand" href="#top" aria-label="WheelGrade home"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>Wheel<span class="g">Grade</span></a>
-    <nav class="nav-links" aria-label="Page sections">
+    <button class="nav-menu-btn" id="nav-menu-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links"><span class="nav-menu-icon" aria-hidden="true">☰</span><span class="nav-menu-label">Menu</span></button>
+    <nav class="nav-links" id="nav-links" aria-label="Page sections">
       <a href="https://wheelgrade.com/app#analyzer">Analyzer</a>
       <a href="https://wheelgrade.com/app#board">Board</a>
       <a href="https://wheelgrade.com/app#portfolio">Portfolio</a>
@@ -574,6 +589,13 @@
 </script>
 
 
+<script>
+/* Nav dropdown — phone/narrow widths: the Menu button toggles the
+   nav panel; tapping a destination closes it (and navigates), as do
+   an outside tap and Escape. Desktop never sees it (button hidden,
+   links inline) — see the 940px media query. */
+(function(){var btn=document.getElementById('nav-menu-btn');var nav=document.getElementById('nav-links');if(!btn||!nav)return;function close(){nav.classList.remove('open');btn.setAttribute('aria-expanded','false');btn.setAttribute('aria-label','Open menu');}btn.addEventListener('click',function(e){e.stopPropagation();var open=nav.classList.toggle('open');btn.setAttribute('aria-expanded',open?'true':'false');btn.setAttribute('aria-label',open?'Close menu':'Open menu');});nav.addEventListener('click',function(e){if(e.target.closest('a'))close();});document.addEventListener('click',function(e){if(!nav.contains(e.target))close();});document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});})();
+</script>
 <script>
 /* Market strip — fills #market-strip from the app's live endpoint
    (same origin), refreshes every 60s, and stays hidden if the feed
