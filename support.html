@@ -103,6 +103,8 @@
       .brand:hover { border-color: var(--green-bright); }
       .brand svg { width: 16px; height: 16px; flex: none; stroke: var(--green-bright); }
       .brand .g { color: var(--green-bright); }
+.brand-tx { display: inline-flex; flex-direction: column; line-height: 1.1; }
+.brand-line { height: 3px; border-radius: 2px; background: #0e7a52; box-shadow: 0 0 8px rgba(53, 212, 146, .55); margin-top: 2px; width: 84%; align-self: center; }
       :root[data-theme="dark"] .brand { background: #1a241c; border-color: #2e3d33; }
       .theme-toggle { margin-left: 12px; display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 8px 14px; border: 1px solid var(--line); border-radius: 999px; background: var(--bg-card); color: var(--ink); font-family: "Public Sans", system-ui, sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; white-space: nowrap; }
       .theme-toggle:hover { background: var(--bg-soft); }
@@ -261,7 +263,7 @@
   <body>
     <header>
       <div class="wrap nav">
-        <a class="brand" href="https://wheelgrade.com" aria-label="WheelGrade home"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>Wheel<span class="g">Grade</span></a>
+        <a class="brand" href="https://wheelgrade.com" aria-label="WheelGrade home"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg><span class="brand-tx"><span>Wheel<span class="g">Grade</span></span><span class="brand-line"></span></span></a>
         <button class="nav-menu-btn" id="nav-menu-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links"><span class="nav-menu-icon" aria-hidden="true">☰</span><span class="nav-menu-label">Menu</span></button>
         <nav class="nav-links" id="nav-links" aria-label="Page sections">
           <a href="https://wheelgrade.com/app#analyzer">Analyzer</a>

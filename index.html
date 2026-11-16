@@ -54,7 +54,7 @@
   .brand{font-family:"Archivo",sans-serif;font-weight:700;font-size:15px;letter-spacing:.01em;color:#fff;text-decoration:none;display:inline-flex;align-items:center;gap:7px;background:#101613;border:1px solid #101613;border-radius:999px;padding:7px 13px 7px 11px}
   .brand:hover{border-color:var(--green-bright)}
   .brand svg{width:16px;height:16px;flex:none;stroke:var(--green-bright)}
-  .brand .g{color:var(--green-bright)}
+  .brand .g{color:var(--green-bright)}.brand-tx{display:inline-flex;flex-direction:column;line-height:1.1}.brand-line{height:3px;border-radius:2px;background:#0e7a52;box-shadow:0 0 8px rgba(53,212,146,.55);margin-top:2px;width:84%;align-self:center}
   :root[data-theme="dark"] .brand{background:#1a241c;border-color:#2e3d33}
   /* Theme toggle — two-way switch: icon shows the CURRENT theme
      (sun in light, moon in dark), label names the mode tapping
@@ -295,7 +295,7 @@
 
 <header>
   <div class="wrap nav">
-    <a class="brand" href="#top" aria-label="WheelGrade home"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>Wheel<span class="g">Grade</span></a>
+    <a class="brand" href="#top" aria-label="WheelGrade home"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg><span class="brand-tx"><span>Wheel<span class="g">Grade</span></span><span class="brand-line"></span></span></a>
     <button class="nav-menu-btn" id="nav-menu-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links"><span class="nav-menu-icon" aria-hidden="true">☰</span><span class="nav-menu-label">Menu</span></button>
     <nav class="nav-links" id="nav-links" aria-label="Page sections">
       <a href="https://wheelgrade.com/app#analyzer">Analyzer</a>
