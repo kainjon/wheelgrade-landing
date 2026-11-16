@@ -227,6 +227,30 @@
   .built-by a{color:var(--green);text-decoration:underline;text-underline-offset:3px;padding:10px 4px;margin:-10px 0;display:inline-block}
   .built-by a:hover{text-decoration:none}
   .foot-sep{color:var(--ink-3);margin:0 4px}
+
+  /* Market strip — one row directly under the header: S&P / Dow /
+     Nasdaq, label + value + signed % only (futures outside regular
+     hours, live indices while the market is open), fed by the app's
+     GET /app/api/market-strip. Same look as the in-app strip at its
+     standard size. Hidden until the first successful fetch — if the
+     feed fails the band never appears (see the script at the end of
+     body). LAYOUT (Nov 16, Jon): the three groups cluster as one
+     centered unit — justify-content:center with a gap that reaches
+     2.5rem on wide screens and scales down with the viewport
+     (clamp(12px, 4vw, 2.5rem)), never stretched edge to edge.
+     FIT: type scales via clamp()/vw and flex items are shrinkable
+     (min-width:0); values >= 10,000 drop their decimals in the
+     script (52,373 not 52,373.00) — the same worst-case string the
+     app strip was measured with fits a 390px phone with headroom. */
+  .market-strip{display:flex;flex-wrap:nowrap;align-items:baseline;justify-content:center;gap:clamp(12px,4vw,2.5rem);white-space:nowrap;line-height:1.4;padding:8px 16px;background:var(--bg-soft);border-bottom:1px solid var(--line)}
+  .market-strip .ms-item{display:inline-flex;align-items:baseline;flex:0 1 auto;min-width:0;gap:clamp(2.5px,.8vw,5px)}
+  .market-strip .ms-item>span{white-space:nowrap}
+  .market-strip .ms-label{font-size:clamp(8px,2.3vw,11px);font-weight:600;color:var(--ink-3);letter-spacing:-.01em}
+  .market-strip .ms-value{font-size:clamp(10px,3.05vw,13px);font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+  .market-strip .ms-change{font-size:clamp(9px,2.8vw,12px);font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+  .market-strip .ms-change.up{color:var(--green)}
+  .market-strip .ms-change.down{color:var(--red)}
+  .market-strip .ms-change.none{color:var(--ink-3)}
 </style>
 </head>
 <body>
@@ -248,6 +272,8 @@
     <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to dark mode"><span class="theme-icon" aria-hidden="true">☀</span><span class="theme-label">Dark</span></button>
   </div>
 </header>
+
+<div id="market-strip" class="market-strip" aria-label="Market snapshot" hidden></div>
 
 <main id="top">
 
@@ -536,6 +562,14 @@
 (function(){var KEY='wheelgrade-theme';var btn=document.getElementById('theme-toggle');if(!btn)return;function render(){var dark=document.documentElement.getAttribute('data-theme')==='dark';var i=btn.querySelector('.theme-icon');var l=btn.querySelector('.theme-label');if(i)i.textContent=dark?'☾':'☀';if(l)l.textContent=dark?'Light':'Dark';btn.setAttribute('aria-label',dark?'Switch to light mode':'Switch to dark mode');}btn.addEventListener('click',function(){var dark=document.documentElement.getAttribute('data-theme')==='dark';if(dark){document.documentElement.removeAttribute('data-theme');try{localStorage.setItem(KEY,'light');}catch(e){}}else{document.documentElement.setAttribute('data-theme','dark');try{localStorage.setItem(KEY,'dark');}catch(e){}}render();});render();})();
 </script>
 
+
+<script>
+/* Market strip — fills #market-strip from the app's live endpoint
+   (same origin), refreshes every 60s, and stays hidden if the feed
+   fails so the page never shows a broken band. Values >= 10,000
+   render with no decimals; label + value + signed % only. */
+(function(){var el=document.getElementById('market-strip');if(!el)return;function fmtNum(n){var d=Math.abs(n)>=10000?0:2;return n.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});}function fmtSigned(n){return (n>0?'+':'')+fmtNum(n);}function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}function load(){fetch('/app/api/market-strip',{headers:{'Accept':'application/json'}}).then(function(r){if(!r.ok)throw new Error('market-strip '+r.status);return r.json();}).then(function(data){if(!data||!data.rows||!data.rows.length){el.hidden=true;return;}el.innerHTML=data.rows.map(function(r){var cls=r.changePct>0?'up':(r.changePct<0?'down':'none');return '<span class="ms-item"><span class="ms-label">'+esc(r.label)+'</span><span class="ms-value">'+fmtNum(r.value)+'</span><span class="ms-change '+cls+'">'+fmtSigned(r.changePct)+'%</span></span>';}).join('');el.hidden=false;}).catch(function(){el.hidden=true;});}load();setInterval(load,60000);})();
+</script>
 
 </body>
 </html>
