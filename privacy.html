@@ -38,6 +38,16 @@
     --red:#b3261e;
     --amber:#9a6a00;
     --ink-3:#6b7770;
+    /* Header aliases — the universal header CSS (mirrored from the
+       landing page) names its colors --ink/--ink-2/--nav-bg/
+       --bg-card/--green-bright/--green-tint; these map them onto
+       this page's palette at the landing page's exact values. */
+    --ink:#101613;
+    --ink-2:#3d4741;
+    --green-bright:#0e7a52;
+    --green-tint:#e7f4ec;
+    --bg-card:#ffffff;
+    --nav-bg:rgba(255,255,255,.92);
   }
   :root[data-theme="dark"]{
     --bg:#0b100d;
@@ -56,6 +66,12 @@
     --red:#ff8a7a;
     --amber:#e8bb4a;
     --ink-3:#7d8f81;
+    --ink:#e8efe9;
+    --ink-2:#a7b8ab;
+    --green-bright:#3ecf7a;
+    --green-tint:#152a1d;
+    --bg-card:#121915;
+    --nav-bg:rgba(11,16,13,.92);
   }
   :root[data-theme="dark"] section p,
   :root[data-theme="dark"] section ul li{ color:#cfdcd1; }
@@ -73,45 +89,61 @@
   a{ color:var(--accent-strong); text-decoration-color: color-mix(in srgb, var(--accent) 45%, transparent); text-underline-offset:3px; }
   a:hover{ text-decoration-color: var(--accent); }
 
-  .top-rule{ height:6px; background:var(--accent); }
-
-  /* Universal header (Jon, Nov 16: "YES UNIVERSAL ON ALL"): every
-     page carries the same header block — pill row, nav row, market
-     strip — in the landing page's arrangement. The nav row lives in
-     .page-head (same column width as .wrap) so the strip can sit
-     full-width between the nav and the content. */
-  .page-head .head-in{ max-width:760px; margin:0 auto; padding:36px 22px 16px; }
-  @media (min-width:720px){ .page-head .head-in{ padding:52px 32px 16px; } }
-  .back-nav{ position:relative; display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
-  .back-nav .nav-links{ margin-left:auto; display:flex; gap:4px; flex-wrap:wrap; }
-  .back-nav .nav-links a{ color:var(--muted); text-decoration:none; font-size:15px; font-weight:600; padding:10px 12px; min-height:44px; display:inline-flex; align-items:center; border-radius:8px; white-space:nowrap; flex-shrink:0; }
-  .back-nav .nav-links a:hover{ color:var(--text); background:var(--bg-soft); }
-  /* Menu button + phone dropdown — the landing page's treatment
-     (the old side-scrolling link row is gone): below 940px the
-     links collapse into a dark panel under a Menu button, styled
-     like the brand pill, with Sign in as the closing green row. */
-  .nav-menu-btn{ display:none; margin-left:auto; align-items:center; gap:6px; min-height:44px; padding:8px 14px; border:1px solid var(--line); border-radius:999px; background:var(--card); color:var(--text); font-family:inherit; font-size:14px; font-weight:700; cursor:pointer; white-space:nowrap; }
+  /* Universal header — mirrored from the landing page
+     (index.html), the proven template: sticky header; one flex
+     row (.wrap.nav) carrying the brand pill, the nav links and
+     the theme toggle; below 940px the links collapse into the
+     dark dropdown panel under a Menu button; the market strip
+     sits directly under the header. Scopings that keep the
+     mirror from leaking into this page's own furniture: the
+     header rule is body>header (this page has a second, content
+     <header> inside <main>), the 1120px .wrap rule applies only
+     inside the header (the content .wrap keeps its 760px
+     column), and the brand rules are header-scoped (the footer
+     carries a plain span.brand). The 6px .top-rule that used to
+     sit above the header is gone — the landing page has none. */
+  body>header{ position:sticky; top:0; z-index:20; background:var(--nav-bg); backdrop-filter:blur(10px); border-bottom:1px solid var(--line); }
+  body>header .wrap{ max-width:1120px; margin:0 auto; padding:0 20px; }
+  .nav{ display:flex; align-items:center; gap:18px; min-height:60px; }
+  body>header .brand{ font-family:"Archivo",sans-serif; font-weight:700; font-size:15px; letter-spacing:.01em; color:#fff; text-decoration:none; display:inline-flex; align-items:center; gap:7px; background:#101613; border:1px solid #101613; border-radius:999px; padding:7px 13px 7px 11px; }
+  body>header .brand:hover{ border-color:var(--green-bright); }
+  body>header .brand svg{ width:16px; height:16px; flex:none; stroke:var(--green-bright); }
+  body>header .brand .g{ color:var(--green-bright); }
+  :root[data-theme="dark"] body>header .brand{ background:#1a241c; border-color:#2e3d33; }
+  .theme-toggle{ margin-left:12px; display:inline-flex; align-items:center; gap:6px; min-height:44px; padding:8px 14px; border:1px solid var(--line); border-radius:999px; background:var(--bg-card); color:var(--ink); font-family:"Public Sans",system-ui,sans-serif; font-size:14px; font-weight:700; cursor:pointer; white-space:nowrap; }
+  .theme-toggle:hover{ background:var(--bg-soft); }
+  .theme-toggle .theme-icon{ font-size:15px; line-height:1; }
+  .nav-links{ margin-left:auto; display:flex; gap:2px; flex-wrap:nowrap; }
+  .nav-links a{ color:var(--ink-2); text-decoration:none; font-size:14px; font-weight:600; padding:10px 9px; min-height:44px; display:inline-flex; align-items:center; border-radius:8px; white-space:nowrap; }
+  .nav-links a:hover{ color:var(--ink); background:var(--bg-soft); }
+  .nav-menu-btn{ display:none; margin-left:auto; align-items:center; gap:6px; min-height:44px; padding:8px 14px; border:1px solid var(--line); border-radius:999px; background:var(--bg-card); color:var(--ink); font-family:"Public Sans",system-ui,sans-serif; font-size:14px; font-weight:700; cursor:pointer; white-space:nowrap; }
   .nav-menu-btn:hover{ background:var(--bg-soft); }
-  .nav-menu-btn[aria-expanded="true"]{ background:var(--accent-soft); border-color:var(--accent); color:var(--accent); }
+  .nav-menu-btn[aria-expanded="true"]{ background:var(--green-tint); border-color:var(--green); color:var(--green); }
   .nav-menu-btn .nav-menu-icon{ font-size:15px; line-height:1; }
-  @media (max-width:940px){
+  @media(max-width:940px){
     .nav-menu-btn{ display:inline-flex; }
-    .back-nav .nav-links{ display:none; position:absolute; top:calc(100% + 6px); right:0; width:min(280px,calc(100vw - 40px)); flex-direction:column; gap:0; margin-left:0; padding:0; overflow:hidden; background:#101613; border:1px solid #2e3d33; border-top:3px solid #caa53d; border-radius:14px; box-shadow:0 18px 40px rgba(7,19,11,.35); z-index:30; }
-    :root[data-theme="dark"] .back-nav .nav-links{ background:#1a241c; border-color:#33463a; border-top-color:#caa53d; }
-    .back-nav .nav-links.open{ display:flex; }
-    .back-nav .nav-links a{ padding:13px 16px; font-size:15.5px; font-weight:600; color:#e8ede9; min-height:48px; border-radius:0; }
-    .back-nav .nav-links a + a{ border-top:1px solid rgba(255,255,255,.09); }
-    .back-nav .nav-links a:hover{ background:rgba(62,207,122,.16); color:#fff; }
-    .back-nav .nav-links a:active{ background:rgba(62,207,122,.26); color:#fff; }
-    .back-nav .nav-links a[href$="#signin"]{ background:#0e7a52; color:#fff; font-weight:700; }
-    .back-nav .nav-links a[href$="#signin"]:hover{ background:#0a5f40; color:#fff; }
+    .nav-links{ display:none; position:absolute; top:calc(100% + 6px); right:20px; width:min(280px,calc(100vw - 40px)); flex-direction:column; gap:0; margin-left:0; padding:0; overflow:hidden; background:#101613; border:1px solid #2e3d33; border-top:3px solid #caa53d; border-radius:14px; box-shadow:0 18px 40px rgba(7,19,11,.35); z-index:30; }
+    :root[data-theme="dark"] .nav-links{ background:#1a241c; border-color:#33463a; border-top-color:#caa53d; }
+    .nav-links.open{ display:flex; }
+    .nav-links a{ padding:13px 16px; font-size:15.5px; font-weight:600; color:#e8ede9; min-height:48px; border-radius:0; }
+    .nav-links a + a{ border-top:1px solid rgba(255,255,255,.09); }
+    .nav-links a:hover{ background:rgba(62,207,122,.16); color:#fff; }
+    .nav-links a:active{ background:rgba(62,207,122,.26); color:#fff; }
+    .nav-links a[href$="#signin"]{ background:#0e7a52; color:#fff; font-weight:700; }
+    .nav-links a[href$="#signin"]:hover{ background:#0a5f40; color:#fff; }
   }
-  @media (max-width:640px){ .nav-menu-label{ display:none; } }
-  /* Market strip — the universal band, copied from the landing
-     page: one row of S&P / Dow / Nasdaq (label + value + signed %),
-     FUTURES/LIVE indicator pinned left (its own row under 600px),
-     fed by GET /app/api/market-strip, hidden until the first
-     successful fetch so a dead feed never shows a broken band. */
+  @media(max-width:640px){
+    .nav{ gap:6px; }
+    body>header .brand{ font-size:18px; }
+    .nav-menu-btn{ padding:8px 11px; }
+    .nav-menu-label{ display:none; }
+  }
+  /* Market strip — the universal band, identical to the landing
+     page: one row of S&P / Dow / Nasdaq (label + value + signed
+     %), FUTURES/LIVE indicator pinned left (its own row under
+     600px), fed by GET /app/api/market-strip, hidden until the
+     first successful fetch so a dead feed never shows a broken
+     band. */
   .market-strip{ position:relative; display:flex; flex-wrap:nowrap; align-items:baseline; justify-content:center; gap:clamp(12px,4vw,2.5rem); white-space:nowrap; line-height:1.4; padding:8px 16px; background:var(--bg-soft); border-bottom:1px solid var(--line); -webkit-text-size-adjust:100%; text-size-adjust:100%; }
   .market-strip[hidden]{ display:none !important; }
   .market-strip .ms-item{ display:inline-flex; align-items:baseline; flex:0 1 auto; min-width:0; gap:clamp(2.5px,.8vw,5px); }
@@ -126,26 +158,6 @@
   .market-strip .ms-mode-dot{ width:6px; height:6px; border-radius:50%; background:var(--amber); flex:0 0 auto; }
   .market-strip .ms-mode-live .ms-mode-dot{ background:var(--green); }
   @media (max-width:599px){ .market-strip{ flex-wrap:wrap; row-gap:1px; padding:7px 10px; gap:10px; } .market-strip .ms-mode{ position:static; transform:none; flex:0 0 100%; order:-1; } .market-strip .ms-item{ gap:4px; } .market-strip .ms-label{ font-size:clamp(8px,2.2vw,11px); } .market-strip .ms-value{ font-size:clamp(11px,3.05vw,13px); } .market-strip .ms-change{ font-size:clamp(10px,2.8vw,12px); } }
-  /* Theme toggle — two-way switch: icon shows the CURRENT theme
-     (sun in light, moon in dark), label names the mode tapping
-     switches to. */
-  .theme-toggle{ display:inline-flex; align-items:center; gap:6px; min-height:44px; padding:8px 14px; border:1px solid var(--line); border-radius:999px; background:var(--card); color:var(--text); font-family:inherit; font-size:14px; font-weight:700; cursor:pointer; white-space:nowrap; }
-  .theme-toggle:hover{ background:var(--bg-soft); }
-  .theme-toggle .theme-icon{ font-size:15px; line-height:1; }
-  /* Black-pill home brand (top-left), identical to the landing
-     page: black pill, white "Wheel", green "Grade", green house
-     icon. In dark mode the pill uses a slightly lighter dark fill +
-     subtle border so it still reads on the black page; the green
-     parts follow --accent in both modes. */
-  .back-nav .brand{
-    font-family:"Archivo",sans-serif; font-weight:700; font-size:15px; letter-spacing:.01em;
-    color:#fff; text-decoration:none; display:inline-flex; align-items:center; gap:7px;
-    background:#101613; border:1px solid #101613; border-radius:999px; padding:7px 13px 7px 11px;
-  }
-  .back-nav .brand:hover{ border-color:var(--accent); }
-  .back-nav .brand svg{ width:16px; height:16px; flex:none; stroke:var(--accent); }
-  .back-nav .brand .g{ color:var(--accent); }
-  :root[data-theme="dark"] .back-nav .brand{ background:#1a241c; border-color:#2e3d33; }
 
   .wrap{
     max-width:760px;
@@ -267,10 +279,8 @@
 </style>
 </head>
 <body>
-<div class="top-rule" aria-hidden="true"></div>
-<header class="page-head">
-  <div class="head-in">
-  <nav class="back-nav" aria-label="Back to home">
+<header>
+  <div class="wrap nav">
     <a class="brand" href="https://wheelgrade.com" aria-label="WheelGrade home"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>Wheel<span class="g">Grade</span></a>
     <button class="nav-menu-btn" id="nav-menu-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links"><span class="nav-menu-icon" aria-hidden="true">☰</span><span class="nav-menu-label">Menu</span></button>
     <nav class="nav-links" id="nav-links" aria-label="Page sections">
@@ -286,7 +296,6 @@
       <a href="https://wheelgrade.com/app#signin">Sign in</a>
     </nav>
     <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to dark mode"><span class="theme-icon" aria-hidden="true">☀</span><span class="theme-label">Dark</span></button>
-  </nav>
   </div>
 </header>
 
