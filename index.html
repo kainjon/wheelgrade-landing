@@ -241,8 +241,15 @@
      FIT: type scales via clamp()/vw and flex items are shrinkable
      (min-width:0); values >= 10,000 drop their decimals in the
      script (52,373 not 52,373.00) — the same worst-case string the
-     app strip was measured with fits a 390px phone with headroom. */
-  .market-strip{display:flex;flex-wrap:nowrap;align-items:baseline;justify-content:center;gap:clamp(12px,4vw,2.5rem);white-space:nowrap;line-height:1.4;padding:8px 16px;background:var(--bg-soft);border-bottom:1px solid var(--line)}
+     app strip was measured with fits a 390px phone with headroom.
+     MODE INDICATOR (Nov 16, Jon): the script prepends a small
+     dot + FUTURES / LIVE label (from the endpoint's mode field) —
+     green dot for live cash indexes, amber for futures — pinned to
+     the band's left end. Below 600px the cluster alone is nearly
+     full width (measured ~11-16px of side room at 360-430px), so
+     there the indicator wraps onto its own left-aligned row above
+     the cluster: groups stay centered, nothing overlaps or clips. */
+  .market-strip{position:relative;display:flex;flex-wrap:nowrap;align-items:baseline;justify-content:center;gap:clamp(12px,4vw,2.5rem);white-space:nowrap;line-height:1.4;padding:8px 16px;background:var(--bg-soft);border-bottom:1px solid var(--line)}
   .market-strip .ms-item{display:inline-flex;align-items:baseline;flex:0 1 auto;min-width:0;gap:clamp(2.5px,.8vw,5px)}
   .market-strip .ms-item>span{white-space:nowrap}
   .market-strip .ms-label{font-size:clamp(8px,2.3vw,11px);font-weight:600;color:var(--ink-3);letter-spacing:-.01em}
@@ -251,6 +258,10 @@
   .market-strip .ms-change.up{color:var(--green)}
   .market-strip .ms-change.down{color:var(--red)}
   .market-strip .ms-change.none{color:var(--ink-3)}
+  .market-strip .ms-mode{position:absolute;left:16px;top:50%;transform:translateY(-50%);display:inline-flex;align-items:center;gap:5px;font-size:clamp(8px,2vw,10px);font-weight:700;letter-spacing:.14em;color:var(--ink-3)}
+  .market-strip .ms-mode-dot{width:6px;height:6px;border-radius:50%;background:var(--amber);flex:0 0 auto}
+  .market-strip .ms-mode-live .ms-mode-dot{background:var(--green)}
+  @media (max-width:599px){.market-strip{flex-wrap:wrap;row-gap:1px}.market-strip .ms-mode{position:static;transform:none;flex:0 0 100%;order:-1}}
 </style>
 </head>
 <body>
@@ -568,7 +579,7 @@
    (same origin), refreshes every 60s, and stays hidden if the feed
    fails so the page never shows a broken band. Values >= 10,000
    render with no decimals; label + value + signed % only. */
-(function(){var el=document.getElementById('market-strip');if(!el)return;function fmtNum(n){var d=Math.abs(n)>=10000?0:2;return n.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});}function fmtSigned(n){return (n>0?'+':'')+fmtNum(n);}function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}function load(){fetch('/app/api/market-strip',{headers:{'Accept':'application/json'}}).then(function(r){if(!r.ok)throw new Error('market-strip '+r.status);return r.json();}).then(function(data){if(!data||!data.rows||!data.rows.length){el.hidden=true;return;}el.innerHTML=data.rows.map(function(r){var cls=r.changePct>0?'up':(r.changePct<0?'down':'none');return '<span class="ms-item"><span class="ms-label">'+esc(r.label)+'</span><span class="ms-value">'+fmtNum(r.value)+'</span><span class="ms-change '+cls+'">'+fmtSigned(r.changePct)+'%</span></span>';}).join('');el.hidden=false;}).catch(function(){el.hidden=true;});}load();setInterval(load,60000);})();
+(function(){var el=document.getElementById('market-strip');if(!el)return;function fmtNum(n){var d=Math.abs(n)>=10000?0:2;return n.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});}function fmtSigned(n){return (n>0?'+':'')+fmtNum(n);}function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}function load(){fetch('/app/api/market-strip',{headers:{'Accept':'application/json'}}).then(function(r){if(!r.ok)throw new Error('market-strip '+r.status);return r.json();}).then(function(data){if(!data||!data.rows||!data.rows.length){el.hidden=true;return;}var modeHtml=data.mode==='cash'?'<span class="ms-mode ms-mode-live"><span class="ms-mode-dot"></span>LIVE</span>':(data.mode==='futures'?'<span class="ms-mode"><span class="ms-mode-dot"></span>FUTURES</span>':'');el.innerHTML=modeHtml+data.rows.map(function(r){var cls=r.changePct>0?'up':(r.changePct<0?'down':'none');return '<span class="ms-item"><span class="ms-label">'+esc(r.label)+'</span><span class="ms-value">'+fmtNum(r.value)+'</span><span class="ms-change '+cls+'">'+fmtSigned(r.changePct)+'%</span></span>';}).join('');el.hidden=false;}).catch(function(){el.hidden=true;});}load();setInterval(load,60000);})();
 </script>
 
 </body>
