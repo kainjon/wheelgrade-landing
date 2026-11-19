@@ -437,5 +437,12 @@
    render with no decimals; label + value + signed % only. */
 (function(){var el=document.getElementById('market-strip');if(!el)return;function fmtNum(n){var d=Math.abs(n)>=10000?0:2;return n.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});}function fmtSigned(n){return (n>0?'+':'')+fmtNum(n);}function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}function load(){fetch('/app/api/market-strip',{headers:{'Accept':'application/json'}}).then(function(r){if(!r.ok)throw new Error('market-strip '+r.status);return r.json();}).then(function(data){if(!data||!data.rows||!data.rows.length){el.hidden=true;return;}var modeHtml=data.mode==='live'?'<span class="ms-mode ms-mode-live"><span class="ms-mode-dot"></span>LIVE</span>':(data.mode==='futures'?'<span class="ms-mode"><span class="ms-mode-dot"></span>FUTURES</span>':'');el.innerHTML=modeHtml+data.rows.map(function(r){var cls=r.changePct>0?'up':(r.changePct<0?'down':'none');return '<span class="ms-item"><span class="ms-label">'+esc(r.label)+'</span><span class="ms-value">'+fmtNum(r.value)+'</span><span class="ms-change '+cls+'">'+fmtSigned(r.changePct)+'%</span></span>';}).join('');el.hidden=false;}).catch(function(){el.hidden=true;});}load();setInterval(load,60000);})();
 </script>
+<script>
+/* Paid users don't need Pricing or Sign in in the nav (Jon, Nov 19) —
+   the same rule the app follows. Reads the app's own scope endpoint:
+   signed in -> hide Sign in; paid -> hide Pricing too. Guests and
+   free users keep both links. */
+(function(){fetch('/app/api/scope',{headers:{'Accept':'application/json'}}).then(function(r){return r.ok?r.json():null;}).then(function(d){if(!d||!d.signedIn)return;document.querySelectorAll('.nav-links a[href$="app#signin"]').forEach(function(a){a.style.display='none';});if(d.paid||d.isOwner){document.querySelectorAll('.nav-links a[href$="#pricing"]').forEach(function(a){a.style.display='none';});}}).catch(function(){});})();
+</script>
 </body>
 </html>
