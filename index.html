@@ -341,6 +341,7 @@
       <a href="https://wheelgrade.com/app#earnings">Earnings</a>
       <a href="https://wheelgrade.com/app#reports">Reports</a>
       <a href="https://wheelgrade.com/app#learn">Learn</a>
+      <a href="#reviews">Reviews</a>
       <a href="#pricing">Pricing</a>
       <a href="https://wheelgrade.com/support.html">Support</a>
       <a href="https://wheelgrade.com/app#signin">Sign in</a>
@@ -787,7 +788,45 @@
   </section>
 
 
-  <!-- FOUNDER + FINAL CTA -->
+  
+  <!-- REVIEWS -->
+  <section id="reviews" class="alt">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="sec-num">What users say</p>
+        <h2>Real words from real users</h2>
+        <p>No actors, no scripts — these are the people using WheelGrade every day, in their own words.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:22px;margin-bottom:30px">
+        <div class="qbox"><p>&ldquo;Wasn&rsquo;t sure how this would go and how it would help me but I gave it a chance, only 10 bucks. Turns out it had way more features and useful tools than I thought. Using it everyday now.&rdquo;</p><p style="margin-top:8px"><b>— Geoff P.</b></p></div>
+        <div class="qbox"><p>&ldquo;As a dividend investor, I&rsquo;m always looking for something to track my dividends in the ways that my brokerage can&rsquo;t — this does all that and more. At the $10 price, kinda no brainer.&rdquo;</p><p style="margin-top:8px"><b>— Ann W.</b></p></div>
+        <div class="qbox"><p>&ldquo;This is amazing! I used to have to go to many sites to get the same info that&rsquo;s all on this site. Buy it, you won&rsquo;t regret it.&rdquo;</p><p style="margin-top:8px"><b>— Roger K.</b></p></div>
+        <div class="qbox"><p>&ldquo;Not an options trader but this has many other really cool tools for any investor. At 9.99 its basically a cup of coffee.&rdquo;</p><p style="margin-top:8px"><b>— Mary S.</b></p></div>
+        <div class="qbox"><p>&ldquo;Bought it, still going through it all, looks pretty legit so far.&rdquo;</p><p style="margin-top:8px"><b>— Douglas M.</b></p></div>
+      </div>
+      <div class="board-card" style="max-width:640px">
+        <div class="bc-head"><b>Use WheelGrade? Leave a review</b><span>Posted after a quick check</span></div>
+        <form id="review-form" style="padding:16px;display:grid;gap:10px">
+          <label style="display:grid;gap:4px;font-size:14px">Your name — first name and last initial is fine
+            <input id="review-name" type="text" maxlength="60" placeholder="e.g. Sam T." style="padding:9px 10px;border:1px solid var(--line);border-radius:8px;font-size:16px;background:var(--surface);color:var(--ink)">
+          </label>
+          <label style="display:grid;gap:4px;font-size:14px">Your review
+            <textarea id="review-text" rows="4" maxlength="600" placeholder="What do you use it for? What surprised you?" style="padding:9px 10px;border:1px solid var(--line);border-radius:8px;font-size:16px;background:var(--surface);color:var(--ink)"></textarea>
+          </label>
+          <input id="review-hp" type="text" name="website" autocomplete="off" tabindex="-1" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+            <button class="btn btn-primary" type="submit">Send review</button>
+            <span id="review-note" style="font-size:14px"></span>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+<script>
+(function(){var f=document.getElementById('review-form');if(!f)return;f.addEventListener('submit',function(e){e.preventDefault();var name=document.getElementById('review-name').value.trim();var text=document.getElementById('review-text').value.trim();var hp=document.getElementById('review-hp').value;var note=document.getElementById('review-note');note.textContent='Sending…';fetch('/app/api/reviews',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:name,text:text,hp:hp})}).then(function(r){return r.json().then(function(d){return{ok:r.ok,d:d};});}).then(function(x){if(x.ok){note.textContent='Thank you — your review is in. It will appear here after a quick check.';f.reset();}else{note.textContent=(x.d&&x.d.error)||'Something went wrong — please try again.';}}).catch(function(){note.textContent='Something went wrong — please try again.';});});})();
+</script>
+
+<!-- FOUNDER + FINAL CTA -->
   <section id="founder">
     <div class="wrap">
       <div class="sec-head">
